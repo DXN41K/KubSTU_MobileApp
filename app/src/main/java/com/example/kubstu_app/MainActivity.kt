@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.service.voice.VoiceInteractionSession.ActivityId
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.kubstu_app.Domains.SpecialDomain
 import com.example.kubstu_app.Fragments.*
 import com.example.kubstu_app.databinding.ActivityMainBinding
 
@@ -33,13 +35,17 @@ class MainActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
 
+
+
 //        val intent = Intent(this, exmplActivity::class.java)
 //        startActivityForResult(intent, REQUEST_CODE)
     }
 
+
+
     private fun replaceFragment(fragment: Fragment) {
-        var fragmentManager = supportFragmentManager
-        var fragmentTransaction = fragmentManager.beginTransaction()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
     }
