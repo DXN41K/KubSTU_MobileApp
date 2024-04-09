@@ -1,4 +1,4 @@
-package com.example.kubstu_app.Adapters
+package com.example.kubstu_app.ViewModel.Adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.kubstu_app.Domains.SpecialDomain
+import com.example.kubstu_app.Model.SpecialDomain
 import com.example.kubstu_app.R
 
 class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context: Context) : Adapter<HomeSpecialAdapter.TextSpecialViewHolder>() {

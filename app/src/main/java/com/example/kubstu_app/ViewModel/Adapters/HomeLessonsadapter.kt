@@ -1,17 +1,14 @@
-package com.example.kubstu_app.Adapters
+package com.example.kubstu_app.ViewModel.Adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Constraint
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Domains.LessonsDomain
+import com.example.kubstu_app.Model.LessonsDomain
 import com.example.kubstu_app.R
-import java.time.LocalDateTime
 
 class HomeLessonsadapter(private val lessons: List<LessonsDomain>, val context: Context)
     : RecyclerView.Adapter<HomeLessonsadapter.LessonsViewHolder>() {

@@ -1,6 +1,5 @@
-package com.example.kubstu_app.Domains
+package com.example.kubstu_app.Model
 
-import android.graphics.Color
 import java.lang.StringBuilder
 import java.time.Duration
 import java.time.LocalDateTime

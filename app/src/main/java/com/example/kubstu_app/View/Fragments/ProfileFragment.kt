@@ -1,4 +1,4 @@
-package com.example.kubstu_app.Fragments
+package com.example.kubstu_app.View.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

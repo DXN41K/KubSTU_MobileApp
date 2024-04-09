@@ -1,9 +1,7 @@
-package com.example.kubstu_app
+package com.example.kubstu_app.ViewModel
 
 import android.database.sqlite.SQLiteOpenHelper
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
 class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :

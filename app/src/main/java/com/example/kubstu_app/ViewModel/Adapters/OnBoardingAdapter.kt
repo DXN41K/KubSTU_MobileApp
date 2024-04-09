@@ -1,4 +1,4 @@
-package com.example.kubstu_app
+package com.example.kubstu_app.ViewModel.Adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kubstu_app.Model.OnBoardingItem
+import com.example.kubstu_app.R
 
 class OnBoardingAdapter(val onBoardingItems: List<OnBoardingItem>): RecyclerView.Adapter<OnBoardingAdapter.OnBoardingViewHolder>() {
 

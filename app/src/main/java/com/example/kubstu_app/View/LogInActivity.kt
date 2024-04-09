@@ -1,14 +1,9 @@
-package com.example.kubstu_app
+package com.example.kubstu_app.View
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ImageSpan
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +12,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.setMargins
 import androidx.viewpager2.widget.ViewPager2
+import com.example.kubstu_app.ViewModel.Adapters.OnBoardingAdapter
+import com.example.kubstu_app.Model.OnBoardingItem
+import com.example.kubstu_app.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-class exmplActivity : AppCompatActivity() {
+class LogInActivity : AppCompatActivity() {
 
     private lateinit var onBoardingAdapter: OnBoardingAdapter
     private lateinit var layoutOnBoardingIndicators: LinearLayout
@@ -29,7 +26,7 @@ class exmplActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exmpl)
+        setContentView(R.layout.activity_login)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.btmSht)).apply {
             peekHeight = 750
@@ -112,13 +109,16 @@ class exmplActivity : AppCompatActivity() {
     //region PageViewFuncs
     private fun setupOnBoardingItems() {
 
-        val first_item :OnBoardingItem = OnBoardingItem(R.drawable.img1,
+        val first_item : OnBoardingItem = OnBoardingItem(
+            R.drawable.img1,
                                                   "Расписание занятий \nи экзаменов")
 
-        val second_item :OnBoardingItem = OnBoardingItem(R.drawable.img2,
+        val second_item : OnBoardingItem = OnBoardingItem(
+            R.drawable.img2,
                                                   "Электронная\nзачетная книжка")
 
-        val third_item :OnBoardingItem = OnBoardingItem(R.drawable.img3,
+        val third_item : OnBoardingItem = OnBoardingItem(
+            R.drawable.img3,
                                                   "Оплата\nзаказов в столовых\nи буфетах")
 
         val onBoardingItems: List<OnBoardingItem> = arrayListOf(first_item, second_item, third_item)
@@ -134,7 +134,9 @@ class exmplActivity : AppCompatActivity() {
         for (i in 0 until indicators.size) {
             val imageView = ImageView(applicationContext)
 
-            imageView.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.onboarding_indicator_inactive))
+            imageView.setImageDrawable(ContextCompat.getDrawable(applicationContext,
+                R.drawable.onboarding_indicator_inactive
+            ))
             imageView.layoutParams = layoutParams
 
             layoutOnBoardingIndicators.addView(imageView)
@@ -148,10 +150,14 @@ class exmplActivity : AppCompatActivity() {
         for (i in 0 until childCount) {
             var imageView: ImageView = layoutOnBoardingIndicators.getChildAt(i) as ImageView
             if (i == index) imageView.setImageDrawable(
-                ContextCompat.getDrawable(applicationContext, R.drawable.onboarding_indicator_active)
+                ContextCompat.getDrawable(applicationContext,
+                    R.drawable.onboarding_indicator_active
+                )
             )
             else  imageView.setImageDrawable(
-                ContextCompat.getDrawable(applicationContext, R.drawable.onboarding_indicator_inactive)
+                ContextCompat.getDrawable(applicationContext,
+                    R.drawable.onboarding_indicator_inactive
+                )
             )
         }
     }

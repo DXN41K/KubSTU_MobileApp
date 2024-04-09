@@ -1,7 +1,4 @@
-package com.example.kubstu_app.Domains
-
-import android.media.Image
-import android.widget.ImageView
+package com.example.kubstu_app.Model
 
 data class SpecialDomain(val Title: String,
                          val SubTitle: String,

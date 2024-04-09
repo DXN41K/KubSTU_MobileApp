@@ -1,18 +1,16 @@
-package com.example.kubstu_app.Fragments
+package com.example.kubstu_app.View.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.kubstu_app.Adapters.HomeLessonsadapter
-import com.example.kubstu_app.Adapters.HomeSpecialAdapter
-import com.example.kubstu_app.Domains.LessonsDomain
-import com.example.kubstu_app.Domains.SpecialDomain
+import com.example.kubstu_app.ViewModel.Adapters.HomeLessonsadapter
+import com.example.kubstu_app.ViewModel.Adapters.HomeSpecialAdapter
+import com.example.kubstu_app.Model.LessonsDomain
+import com.example.kubstu_app.Model.SpecialDomain
 import com.example.kubstu_app.R
 import java.time.LocalDateTime
 
