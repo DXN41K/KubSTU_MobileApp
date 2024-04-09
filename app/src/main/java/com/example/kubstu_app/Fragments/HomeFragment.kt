@@ -14,6 +14,7 @@ import com.example.kubstu_app.Adapters.HomeSpecialAdapter
 import com.example.kubstu_app.Domains.LessonsDomain
 import com.example.kubstu_app.Domains.SpecialDomain
 import com.example.kubstu_app.R
+import java.time.LocalDateTime
 
 
 class HomeFragment : Fragment() {
@@ -56,9 +57,13 @@ class HomeFragment : Fragment() {
     }
     private fun InitLessonsRecyclingView() :List<LessonsDomain>{
         val lessonsItems = mutableListOf<LessonsDomain>()
-        lessonsItems.add(LessonsDomain())
-        lessonsItems.add(LessonsDomain())
-        lessonsItems.add(LessonsDomain())
+        val currentTime = LocalDateTime.now()
+        lessonsItems.add(LessonsDomain("Лекция", LocalDateTime.of(currentTime.year, currentTime.month, currentTime.dayOfMonth, 15, 0),
+            "К-202", "Современные проблемы искусственного интеллекта", "Марков Виталий Николаевич"))
+        lessonsItems.add(LessonsDomain("Другое", LocalDateTime.of(currentTime.year, currentTime.month, currentTime.dayOfMonth, 8, 20),
+            "К-143", "Встреча с директором", ""))
+        lessonsItems.add(LessonsDomain("Лабораторные занятия", LocalDateTime.of(currentTime.year, currentTime.month, currentTime.dayOfMonth, 13, 20),
+            "К-202", "Современные проблемы искусственного интеллекта", "Марков Виталий Николаевич"))
         return lessonsItems
     }
 }

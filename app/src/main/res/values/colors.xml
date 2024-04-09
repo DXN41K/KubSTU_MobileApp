@@ -12,4 +12,8 @@
     <color name="whiteColorLight">#FFFFFFFF</color>
     <color name="whiteColorDark">#FFFFFFFF</color>
     <color name="HintStart">#FF999999</color>
+    <color name="HomeLection">#EB4C42</color>
+    <color name="HomeLab">#5CE755</color>
+    <color name="HomePract">#FFD555</color>
+    <color name="HomeElse">#FF4B32EA</color>
 </resources>

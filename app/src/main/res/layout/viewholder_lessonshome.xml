@@ -39,10 +39,10 @@
                 android:id="@+id/cardView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginEnd="40dp"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/LessonType"
-                app:layout_constraintStart_toEndOf="@+id/LessonType"
+                app:layout_constraintEnd_toStartOf="@+id/cardView5"
                 app:layout_constraintTop_toTopOf="@+id/LessonType">
 
                 <LinearLayout
@@ -58,6 +58,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="5dp"
                         android:text="1 пара"
+                        android:textColor="@color/black"
                         android:textSize="10dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +81,7 @@
                                 android:layout_marginHorizontal="10dp"
                                 android:layout_marginVertical="2dp"
                                 android:text="8:00 – 9:30"
+                                android:textColor="@color/black"
                                 android:textSize="10dp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -93,6 +95,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -107,12 +110,13 @@
                     android:background="#00FF75">
 
                     <TextView
-                        android:id="@+id/auditory"
+                        android:id="@+id/audience"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginVertical="2dp"
                         android:text="К-234"
+                        android:textColor="@color/black"
                         android:textSize="10dp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
