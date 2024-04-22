@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kubstu_app.ViewModel.Adapters.OnBoardingAdapter
 import com.example.kubstu_app.Model.OnBoardingItem
 import com.example.kubstu_app.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class LogInActivity : AppCompatActivity() {
 
@@ -24,17 +30,28 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var layoutOnBoardingIndicators: LinearLayout
     private lateinit var LogInBtn: Button
 
+    companion object{
+        val dip = 40f
+        var px by Delegates.notNull<Float>()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.btmSht)).apply {
-            peekHeight = 750
+            val displayMetrics = resources.displayMetrics
+            val height = displayMetrics.heightPixels
+            this.peekHeight = (height * 0.25).toInt()
+            px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,  resources.displayMetrics)
             this.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         val bottomSheetBehavior2 = BottomSheetBehavior.from(findViewById(R.id.btmSht2)).apply {
 
+            val displayMetrics = resources.displayMetrics
+            val height = displayMetrics.heightPixels
+            this.peekHeight = (height * 0.78).toInt()
             this.isHideable = true
             this.isDraggable = false
             this.state = BottomSheetBehavior.STATE_HIDDEN
@@ -45,13 +62,15 @@ class LogInActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 val state1 = (slideOffset <= 0.12)
                 val alpha1 = (1 - 2.0 * slideOffset).toFloat()
                 val state2 = (slideOffset >= 0.95)
                 val alpha2 = ((slideOffset - 0.5) * 2.0).toFloat()
 
+                findViewById<CardView>(R.id.bottomsheetnegr).radius = (px - px * slideOffset)
                 findViewById<ViewPager2>(R.id.ViewPagerOnBoarding).isEnabled = state1
                 findViewById<TextView>(R.id.textView2).isEnabled = state1
                 findViewById<TextView>(R.id.createAccountLink).isEnabled = state1
@@ -62,12 +81,14 @@ class LogInActivity : AppCompatActivity() {
                 findViewById<ImageView>(R.id.LogoImg).alpha = alpha2
                 findViewById<TextView>(R.id.LogoText).alpha = alpha2
 
-                if (slideOffset >= 0.97) {
+                if ((bottomSheetBehavior2.state == BottomSheetBehavior.STATE_HIDDEN) && (slideOffset >= 0.95)) {
+                    GlobalScope.launch {
                     bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-                else {
+                    }
+                } else if ((bottomSheetBehavior2.state == BottomSheetBehavior.STATE_COLLAPSED) && (slideOffset <= 0.95)){
+                    GlobalScope.launch {
                     bottomSheetBehavior2.state = BottomSheetBehavior.STATE_HIDDEN
-
+                    }
                 }
             }
 
@@ -88,7 +109,8 @@ class LogInActivity : AppCompatActivity() {
         setupOnBoardingIndicators()
         setCurrentOnBoardingIndicator(0);
 
-        onBoardingViewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+        onBoardingViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 setCurrentOnBoardingIndicator(position)
@@ -109,17 +131,20 @@ class LogInActivity : AppCompatActivity() {
     //region PageViewFuncs
     private fun setupOnBoardingItems() {
 
-        val first_item : OnBoardingItem = OnBoardingItem(
+        val first_item: OnBoardingItem = OnBoardingItem(
             R.drawable.img1,
-                                                  "Расписание занятий \nи экзаменов")
+            "Расписание занятий \nи экзаменов"
+        )
 
-        val second_item : OnBoardingItem = OnBoardingItem(
+        val second_item: OnBoardingItem = OnBoardingItem(
             R.drawable.img2,
-                                                  "Электронная\nзачетная книжка")
+            "Электронная\nзачетная книжка"
+        )
 
-        val third_item : OnBoardingItem = OnBoardingItem(
+        val third_item: OnBoardingItem = OnBoardingItem(
             R.drawable.img3,
-                                                  "Оплата\nзаказов в столовых\nи буфетах")
+            "Оплата\nзаказов в столовых\nи буфетах"
+        )
 
         val onBoardingItems: List<OnBoardingItem> = arrayListOf(first_item, second_item, third_item)
 
@@ -129,14 +154,19 @@ class LogInActivity : AppCompatActivity() {
     private fun setupOnBoardingIndicators() {
         val indicators = arrayOfNulls<ImageView>(onBoardingAdapter.itemCount)
 
-        val layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        val layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
 
+        layoutParams.marginStart = 5
+        layoutParams.marginEnd = 5
         for (i in 0 until indicators.size) {
             val imageView = ImageView(applicationContext)
 
-            imageView.setImageDrawable(ContextCompat.getDrawable(applicationContext,
-                R.drawable.onboarding_indicator_inactive
-            ))
+            imageView.setImageDrawable(
+                ContextCompat.getDrawable(
+                    applicationContext,
+                    R.drawable.onboarding_indicator_inactive
+                )
+            )
             imageView.layoutParams = layoutParams
 
             layoutOnBoardingIndicators.addView(imageView)
@@ -150,12 +180,14 @@ class LogInActivity : AppCompatActivity() {
         for (i in 0 until childCount) {
             var imageView: ImageView = layoutOnBoardingIndicators.getChildAt(i) as ImageView
             if (i == index) imageView.setImageDrawable(
-                ContextCompat.getDrawable(applicationContext,
+                ContextCompat.getDrawable(
+                    applicationContext,
                     R.drawable.onboarding_indicator_active
                 )
             )
-            else  imageView.setImageDrawable(
-                ContextCompat.getDrawable(applicationContext,
+            else imageView.setImageDrawable(
+                ContextCompat.getDrawable(
+                    applicationContext,
                     R.drawable.onboarding_indicator_inactive
                 )
             )

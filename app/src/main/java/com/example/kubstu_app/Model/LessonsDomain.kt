@@ -5,16 +5,18 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-data class LessonsDomain(val type: String,
-                         val time: LocalDateTime,
-                         val audience: String,
-                         val name: String,
-                         val teacher: String,
-                         var altTime: String? = null) {
-
+data class LessonsDomain(
+    val type: String,
+    val time: LocalDateTime,
+    val audience: String,
+    val name: String,
+    val teacher: String,
+    var altTime: String? = null
+) {
     var hasLeft: String
     var durTimeStart: String
     var durTimeEnd: String
+
     init {
         hasLeft = getDifferenceDate()
 
@@ -38,7 +40,7 @@ data class LessonsDomain(val type: String,
     }
 
     fun getTime() = "$durTimeStart - $durTimeEnd"
-    private fun getDifferenceDate() :String {
+    private fun getDifferenceDate(): String {
         val result = StringBuilder()
 
         val currentTime = LocalDateTime.now()
@@ -53,8 +55,7 @@ data class LessonsDomain(val type: String,
             if (hours > 0) {
                 result.append("Осталось $hours часов")
                 if (minutes > 0) result.append(", $minutes минут")
-            }
-            else {
+            } else {
                 if (minutes > 0) result.append("Осталось $minutes минут")
                 else result.append("Занятие началось")
             }
