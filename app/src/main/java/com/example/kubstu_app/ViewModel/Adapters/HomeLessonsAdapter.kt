@@ -1,17 +1,20 @@
 package com.example.kubstu_app.ViewModel.Adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kubstu_app.Model.LessonModel
 import com.example.kubstu_app.Model.LessonsDomain
 import com.example.kubstu_app.R
 
-class HomeLessonsadapter(private val lessons: List<LessonsDomain>, val context: Context)
-    : RecyclerView.Adapter<HomeLessonsadapter.LessonsViewHolder>() {
+class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLessonsAdapter.LessonsViewHolder>(Comparator()) {
     inner class LessonsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val typeTV: TextView = itemView.findViewById(R.id.LessonType)
         val timeTV: TextView = itemView.findViewById(R.id.LessonsTime)
@@ -23,12 +26,12 @@ class HomeLessonsadapter(private val lessons: List<LessonsDomain>, val context: 
         val colorCard: ConstraintLayout = itemView.findViewById(R.id.LessonCardCornerColor)
         fun bind(data: LessonsDomain) {
             typeTV.text = data.type
-            timeTV.text = data.getTime()
+            timeTV.text = data.GetThisTime()
             audienceTV.text = data.audience
             nameTV.text = data.name
             teacher.text = data.teacher
             hasLeft.text = data.hasLeft
-            altTime.text = data.altTime
+            altTime.text = "${data.pair} пара"
             colorCard.setBackgroundColor(
                 when (data.type) {
                     ("Лекция") -> context.resources.getColor(R.color.HomeLection)
@@ -45,12 +48,29 @@ class HomeLessonsadapter(private val lessons: List<LessonsDomain>, val context: 
         return LessonsViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return lessons.size
+    override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
+        val data = ConvertToVM(getItem(position))
+        holder.bind(data)
     }
 
-    override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
-        val data = lessons[position]
-        holder.bind(data)
+    private fun ConvertToVM(Smth: LessonModel): LessonsDomain {
+        return LessonsDomain(
+            Smth.kindofnagr.kindofnagr_name,
+            Smth.classroom,
+            Smth.disc.disc_name,
+            Smth.teacher,
+            Smth.pair
+        )
+    }
+
+    class Comparator : DiffUtil.ItemCallback<LessonModel>() {
+        override fun areItemsTheSame(oldItem: LessonModel, newItem: LessonModel): Boolean {
+            return oldItem.pair == newItem.pair
+        }
+
+        override fun areContentsTheSame(oldItem: LessonModel, newItem: LessonModel): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }

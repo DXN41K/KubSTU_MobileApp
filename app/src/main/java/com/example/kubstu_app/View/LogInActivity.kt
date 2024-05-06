@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginStart
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kubstu_app.ViewModel.Adapters.OnBoardingAdapter
 import com.example.kubstu_app.Model.OnBoardingItem
@@ -39,10 +40,21 @@ class LogInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val displayMetrics = resources.displayMetrics
+        val height = displayMetrics.heightPixels
+        val peek = (height * 0.25).toInt()
+
+        val marg = (peek - 160) / 2
+
+        val Logo: View = findViewById(R.id.LogoLayer)
+        val layoutParams = Logo.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, marg, 0, 0)
+        Logo.layoutParams = layoutParams
+
+
+
         val bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.btmSht)).apply {
-            val displayMetrics = resources.displayMetrics
-            val height = displayMetrics.heightPixels
-            this.peekHeight = (height * 0.25).toInt()
+            this.peekHeight = peek
             px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,  resources.displayMetrics)
             this.state = BottomSheetBehavior.STATE_COLLAPSED
         }
@@ -51,7 +63,7 @@ class LogInActivity : AppCompatActivity() {
 
             val displayMetrics = resources.displayMetrics
             val height = displayMetrics.heightPixels
-            this.peekHeight = (height * 0.78).toInt()
+            this.peekHeight = (height * 0.75).toInt()
             this.isHideable = true
             this.isDraggable = false
             this.state = BottomSheetBehavior.STATE_HIDDEN

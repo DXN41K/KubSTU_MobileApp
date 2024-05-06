@@ -61,14 +61,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/LogoLayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/LayoutOnBoardingIndicator">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_margin="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -76,7 +77,7 @@
                     <ImageView
                         android:id="@+id/LogoImg"
                         android:layout_width="100dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="100dp"
                         android:adjustViewBounds="true"
                         android:alpha="0"
                         android:src="@drawable/logo"
@@ -89,9 +90,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:alpha="0"
+                        android:layout_marginStart="16dp"
                         android:text="Кубанский государственный\nтехнологический университет"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/LogoImg"
@@ -109,7 +111,7 @@
                 android:foregroundTint="@color/white"
                 android:text="Войти"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +126,7 @@
                 android:layout_marginEnd="90dp"
                 android:text="Нет еще аккаунта?"
                 android:textColor="#ddFFFFFF"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/BtnOnBoardingAction" />
@@ -137,7 +139,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Создайте его."
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/BtnOnBoardingAction" />
@@ -168,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:lineHeight="27dp"
                 android:text="Авторизуйтесь\nдля продолжения"
-                android:textSize="26sp"
+                android:textSize="26dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"

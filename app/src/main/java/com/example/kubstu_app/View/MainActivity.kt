@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val intent = Intent(this, LogInActivity::class.java)
-        startActivityForResult(intent, REQUEST_CODE)
+//        val intent = Intent(this, LogInActivity::class.java)
+//        startActivityForResult(intent, REQUEST_CODE)
     }
 
 

@@ -9,7 +9,7 @@
     android:layout_margin="8dp">
 
     <ImageView
-        android:id="@+id/BackgroundImageView"
+        android:id="@+id/BackgroundNoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/backgroundgradient_green"/>
