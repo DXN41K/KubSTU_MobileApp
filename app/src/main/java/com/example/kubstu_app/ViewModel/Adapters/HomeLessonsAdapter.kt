@@ -1,7 +1,6 @@
 package com.example.kubstu_app.ViewModel.Adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,14 @@ import com.example.kubstu_app.Model.LessonsDomain
 import com.example.kubstu_app.R
 
 class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLessonsAdapter.LessonsViewHolder>(Comparator()) {
+
+    val colorsFromType = mapOf(
+        "Лекция" to context.resources.getColor(R.color.HomeLection),
+        "Лабораторные занятия" to context.resources.getColor(R.color.HomeLab),
+        "Практические занятия" to context.resources.getColor(R.color.HomePract)
+    )
+    val elseColor = context.resources.getColor(R.color.HomeElse)
+
     inner class LessonsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val typeTV: TextView = itemView.findViewById(R.id.LessonType)
         val timeTV: TextView = itemView.findViewById(R.id.LessonsTime)
@@ -32,14 +39,8 @@ class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLe
             teacher.text = data.teacher
             hasLeft.text = data.hasLeft
             altTime.text = "${data.pair} пара"
-            colorCard.setBackgroundColor(
-                when (data.type) {
-                    ("Лекция") -> context.resources.getColor(R.color.HomeLection)
-                    ("Лабораторные занятия") -> context.resources.getColor(R.color.HomeLab)
-                    ("Практические занятия") -> context.resources.getColor(R.color.HomePract)
-                    else -> context.resources.getColor(R.color.HomeElse)
-                }
-            )
+            val BckColor = colorsFromType[data.type] ?: elseColor
+            colorCard.setBackgroundColor(BckColor)
         }
     }
 
