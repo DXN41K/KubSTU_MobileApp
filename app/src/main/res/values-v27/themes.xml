@@ -26,4 +26,7 @@
     <style name="NavbarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/navbar_background_color</item>
     </style>
+    <style name="BottomNavigationViewLabelText" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">16sp</item> <!-- Увеличьте размер текста здесь -->
+    </style>
 </resources>

@@ -29,8 +29,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
                 R.id.schedule -> replaceFragment(ScheduleFragment())
-                R.id.student -> replaceFragment(StudentFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.settings -> replaceFragment(ProfileFragment())
             }
             return@setOnItemSelectedListener true
         }
