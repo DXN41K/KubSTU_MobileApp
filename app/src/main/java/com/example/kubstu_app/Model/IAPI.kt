@@ -12,4 +12,12 @@ interface IAPI {
         @Query("gr") gr: String,
         @Query("ugod") year: Int,
         @Query("semestr") sem: Int) : Products
+
+    @GET("timetable/schedule")
+    suspend fun GetThen(
+        @Query("gr") gr: String,
+        @Query("ugod") year: Int,
+        @Query("semestr") sem: Int,
+        @Query("date_start") start: String,
+        @Query("date_end") end: String) : Products
 }

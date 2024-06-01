@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 
 data class LessonsDomain(
     val type: String,
-    val audience: String,
+    var audience: String,
     val name: String,
     val teacher: String,
     var pair: Int
@@ -17,10 +17,10 @@ data class LessonsDomain(
     var time: String
 
     var hasLeft: String
-    var durTimeStart: String
-    var durTimeEnd: String
+    private var durTimeStart: String
+    private var durTimeEnd: String
 
-    val pairMap = mapOf(
+    private val pairMap = mapOf(
         1 to "8:00",
         2 to "9:40",
         3 to "11:20",
@@ -28,10 +28,13 @@ data class LessonsDomain(
         5 to "15:00",
         6 to "16:40",
         7 to "18:20")
-    val ElsePair = "00:00"
+    private val ElsePair = "00:00"
 
     init {
 
+        if (audience == "Ф-Спортивный комплекс") {
+            audience = "Ф"
+        }
         time = pairMap[pair] ?: ElsePair
 
         val timee = LocalDateTime.now()

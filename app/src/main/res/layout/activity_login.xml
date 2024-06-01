@@ -49,6 +49,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:alpha="0"
                 android:id="@+id/LayoutOnBoardingIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,84 +66,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/LayoutOnBoardingIndicator">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
 
                     <ImageView
                         android:id="@+id/LogoImg"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
                         android:adjustViewBounds="true"
                         android:alpha="0"
-                        android:src="@drawable/logo"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:src="@drawable/logo1" />
 
                     <TextView
                         android:id="@+id/LogoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:alpha="0"
-                        android:layout_marginStart="16dp"
+                        android:gravity="center"
                         android:text="Кубанский государственный\nтехнологический университет"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/LogoImg"
-                        app:layout_constraintTop_toTopOf="@+id/LogoImg" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:textSize="16dp"
+                        android:textStyle="bold"/>
 
             </LinearLayout>
 
             <Button
                 android:id="@+id/BtnOnBoardingAction"
                 android:layout_width="315dp"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="35dp"
                 android:backgroundTint="@color/white"
                 android:foregroundTint="@color/white"
-                android:text="Войти"
+                android:text="Перейти в приложение"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="20dp"
+                android:letterSpacing="0.01"
                 android:textStyle="bold"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/LayoutOnBoardingIndicator" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="90dp"
-                android:text="Нет еще аккаунта?"
-                android:textColor="#ddFFFFFF"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/BtnOnBoardingAction" />
-
-            <TextView
-                android:id="@+id/createAccountLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
-                android:text="Создайте его."
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/BtnOnBoardingAction" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,7 +121,7 @@
     <FrameLayout
         android:id="@+id/btmSht2"
         android:layout_width="match_parent"
-        android:layout_height="767dp"
+        android:layout_height="520dp"
         android:layout_marginTop="10dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/rounded2"
@@ -164,155 +133,222 @@
             android:layout_marginHorizontal="60dp"
             android:layout_marginTop="40dp">
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineHeight="27dp"
-                android:text="Авторизуйтесь\nдля продолжения"
-                android:textSize="26dp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Имя пользователя или E-mail"
-                android:textColor="@android:color/background_dark"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                tools:ignore="MissingConstraints" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/LoginTB"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/stage1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
+                android:layout_height="300dp"
+                android:alpha="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:boxStrokeWidthFocused="1dp"
-                app:boxStrokeColor="@color/blue"
-                app:helperTextTextColor="@color/blue"
-                android:textColorHint="@color/HintStart"
-                app:layout_constraintTop_toBottomOf="@+id/textView5">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
-                    android:id="@+id/userNameTBB"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:inputType="textPersonName"
+                <TextView
+                    android:id="@+id/textView411"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0"
+                    android:lineHeight="27dp"
+                    android:text="Выберите вашу\nакадемическую группу"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/black"/>
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/passwordText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Пароль"
-                android:textColor="@android:color/background_dark"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/LoginTB" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordTB"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxStrokeWidthFocused="1dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColorHint="@color/HintStart"
-                app:helperTextTextColor="@color/blue"
-                app:boxStrokeColor="@color/blue"
-                app:layout_constraintTop_toBottomOf="@+id/passwordText">
-
-                <EditText
-                    android:id="@+id/passWordTBB"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/textView511"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Группа"
                     android:textColor="@android:color/background_dark"
-                    android:password="true"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/textView411"
+                    tools:ignore="MissingConstraints" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/GroupTB"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/HintStart"
+                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeWidthFocused="1dp"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperTextTextColor="@color/blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView511">
+
+                    <EditText
+                        android:id="@+id/GroupTE"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/GroupBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/blue"
+                    android:text="Продолжить"
+                    android:letterSpacing="0.01"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/GroupTB" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/ForgotPasswordText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Забыли пароль?"
-                android:textColor="@color/blue"
-                app:layout_constraintTop_toBottomOf="@id/passwordTB"
-                android:layout_marginTop="-10dp"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/LogInBtn"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:alpha="0"
+                android:id="@+id/stage2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="400dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ForgotPasswordText"
-                android:layout_marginTop="10dp"
-                android:text="Вход"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/blue"/>
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/ECItext"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/GroupTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0"
+                    android:enabled="false"
+                    android:lineHeight="27dp"
+                    android:text="Заполните профиль"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/GroupLable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Фамилия"
+                    android:enabled="false"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintTop_toBottomOf="@+id/GroupTV"
+                    tools:ignore="MissingConstraints" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/SurNameTB"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/HintStart"
+                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeWidthFocused="1dp"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    android:enabled="false"
+                    app:helperTextTextColor="@color/blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/GroupLable">
+
+                    <EditText
+                        android:enabled="false"
+                        android:id="@+id/SurNameTE"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/NameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Имя"
+                    android:enabled="false"
+                    android:textColor="@android:color/background_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/SurNameTB" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/NameTB"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/HintStart"
+                    app:boxStrokeColor="@color/blue"
+                    app:boxStrokeWidthFocused="1dp"
+                    app:errorEnabled="false"
+                    android:enabled="false"
+                    app:helperTextTextColor="@color/blue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/NameText">
+
+                    <EditText
+                        android:id="@+id/NameTE"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:textColor="@android:color/background_dark"
+                        android:textColorHint="@color/black" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/LogInBtn"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/blue"
+                    android:layout_marginTop="20dp"
+                    android:text="Войти"
+                    android:letterSpacing="0.01"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/NameTB" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/LogInBtn"
-                android:textColor="@color/blue"
-                android:textStyle="bold"
-                android:text="Узнать данные для входа через ЕСИ"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="20dp"
+                android:gravity="center">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Войти с помощью"
-                android:textColor="@color/black"
-                android:paddingBottom="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ECItext" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/blue_heart"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"/>
 
-            <ImageButton
-                android:id="@+id/GosLoginBtn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/goslogin"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <ImageButton
-                android:id="@+id/VkLoginBtn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/vklogin"
-                app:layout_constraintStart_toEndOf="@id/GosLoginBtn"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                android:layout_marginStart="10dp"/>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </FrameLayout>
 

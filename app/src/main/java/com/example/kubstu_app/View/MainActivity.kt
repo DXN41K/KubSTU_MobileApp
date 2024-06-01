@@ -34,11 +34,6 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener true
         }
-
-
-
-//        val intent = Intent(this, LogInActivity::class.java)
-//        startActivityForResult(intent, REQUEST_CODE)
     }
 
 
@@ -48,22 +43,6 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // Обработка результата, полученного от второго активити
-            val returnedValue = data?.getStringExtra("key")
-            // Далее вы можете выполнить нужные действия с полученным результатом
-        }
-        else {
-            finish()
-        }
-    }
-    companion object {
-        const val REQUEST_CODE = 123
     }
 }
 

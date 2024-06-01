@@ -16,7 +16,7 @@ import com.example.kubstu_app.R
 class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLessonsAdapter.LessonsViewHolder>(Comparator()) {
 
     val colorsFromType = mapOf(
-        "Лекция" to context.resources.getColor(R.color.HomeLection),
+        "Лекции" to context.resources.getColor(R.color.HomeLection),
         "Лабораторные занятия" to context.resources.getColor(R.color.HomeLab),
         "Практические занятия" to context.resources.getColor(R.color.HomePract)
     )
