@@ -17,8 +17,9 @@ class SplashScreen : AppCompatActivity() {
 
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
-        val value: String? = sharedPreferences.getString("Users_group", null);
-        if (value != null) {
+        val value: String? = sharedPreferences.getString("Users_group", null)
+        val name: String? = sharedPreferences.getString("Users_name", null)
+        if (value != null && name != null) {
 
             // Используем Handler для задержки перехода на главный экран
             Handler().postDelayed({

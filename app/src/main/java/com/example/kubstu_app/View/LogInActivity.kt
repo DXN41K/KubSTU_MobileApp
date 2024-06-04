@@ -5,10 +5,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.sax.TextElementListener
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
+import android.text.util.Linkify
+import android.util.Patterns
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -60,6 +71,49 @@ class LogInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val termsAndConditionsTextView = findViewById<TextView>(R.id.terms_and_conditions_text_view)
+
+        val longText = "Нажимая кнопку «Войти», вы принимаете условия использования и даете согласие ФГБОУ ВО «КубГТУ» на обработку ваших персональных данных в соотвествии с его политикой"
+        val termsAndConditionsText = SpannableString(longText)
+        val matcher = Patterns.WEB_URL.matcher(longText)
+        var matchStart: Int = 39
+        var matchEnd: Int = 59
+
+        while (matcher.find()) {
+            matchStart = matcher.start(1)
+            matchEnd = matcher.end()
+
+            var url = "https://kubstu.ru/app-terms"
+
+            val clickableSpan: ClickableSpan = object : ClickableSpan () {
+                override fun onClick(widget: View) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.color = Color.BLUE
+                    ds.isUnderlineText = true
+                }
+            }
+            termsAndConditionsText.setSpan(clickableSpan, matchStart, matchEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        }
+        findViewById<TextView>(R.id.terms_and_conditions_text_view).text = termsAndConditionsText
+        findViewById<TextView>(R.id.terms_and_conditions_text_view).movementMethod = LinkMovementMethod.getInstance()
+
+        /*
+
+        termsAndConditionsText.setSpan(URLSpan("https://kubstu.ru/app-terms"), 39, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        termsAndConditionsText.setSpan(URLSpan("https://kubstu.ru/s-637"), 150, 162, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        termsAndConditionsTextView.text = termsAndConditionsText
+        termsAndConditionsTextView.setMovementMethod(LinkMovementMethod.getInstance())*/
+
+
 
         ChooseGroupBtn = findViewById(R.id.ChooseGroupBtn)
         ChooseGroupBtn.setOnClickListener {
