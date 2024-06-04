@@ -19,7 +19,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:background="@color/blue"
                 android:orientation="vertical"
                 android:paddingTop="24dp">
@@ -33,16 +33,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
+                        android:layout_marginBottom="20dp"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="@+id/userImgHome"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/userImgHome">
+>
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/GoodDayText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Добрый день,"
+                            android:fontFamily="@font/cygre_book"
                             android:textColor="@color/white"
                             android:textSize="20dp" />
 
@@ -51,86 +53,55 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Пользователь."
+                            android:layout_marginTop="-10dp"
                             android:textColor="@color/white"
                             android:textSize="24dp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/cygre_bold"
                             app:layout_constraintStart_toStartOf="parent" />
 
                     </LinearLayout>
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/userImgHome"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="108dp"
-                        android:src="@drawable/ic_launcher_background"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:shapeAppearanceOverlay="@style/roundedImageView" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="24dp"
-                        android:text="Специально для Вас"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="130dp">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:src="@drawable/backgrount"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/SpecialRecyclingView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    app:cardCornerRadius="10dp"
+                    android:elevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView">
+
+                    <ImageButton
+                        android:id="@+id/GoToScheduleBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/blue"
+                        android:src="@drawable/baseline_arrow_forward_ios_24"
+                        android:scaleType="centerCrop"
+                        android:padding="10dp"/>
+
+                </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textView"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="12dp"
-                    android:text="Уведомления"
+                    android:fontFamily="@font/cygre_bold"
+                    android:text="Расписание\nна сегодня"
                     android:textSize="22dp"
-                    android:textStyle="bold"
-
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -139,11 +110,23 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/HomeNoPairText"
+                    android:alpha="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="@font/cygre_regular"
+                    android:text="На сегодня пар нет, отдыхайте)"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -151,10 +134,11 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/LessonsRecyclingView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:paddingStart="16dp"
-                        android:paddingEnd="16dp" />
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"/>
 
                 </LinearLayout>
 
@@ -166,6 +150,7 @@
 
 
                 <TextView
+                    android:id="@+id/serviceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -173,10 +158,23 @@
                     android:layout_marginBottom="12dp"
                     android:text="Сервисы"
                     android:textSize="22dp"
-                    android:textStyle="bold"
-
+                    android:fontFamily="@font/cygre_bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="Раздел в разработке"
+                    android:textColor="@color/HintStart"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/cygre_bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/serviceText"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -186,68 +184,19 @@
                 android:layout_height="match_parent"
                 android:paddingHorizontal="32dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintEnd_toStartOf="@id/cardView2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/backgroundgradient_gray" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/accessImg"
-                            android:layout_width="66dp"
-                            android:src="@drawable/noimg1"
-                            android:scaleType="centerCrop"
-                            android:layout_height="66dp"
-                            android:layout_margin="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Пропуск"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:layout_marginVertical="8dp"
-                            android:layout_marginHorizontal="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/accessImg"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="0dp"
+                    android:id="@+id/servicebtn"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cardView1"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintStart_toEndOf="@id/cardView1"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
 
@@ -262,127 +211,30 @@
 
                         <ImageView
                             android:id="@+id/OnlinePrintImg"
-                            android:layout_width="match_parent"
-                            android:layout_height="66dp"
-                            android:layout_margin="16dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/noimg1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Онлайн-печать"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:layout_marginVertical="8dp"
-                            android:layout_marginHorizontal="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/OnlinePrintImg"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/cardView4"
-                    app:layout_constraintTop_toBottomOf="@id/cardView2">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/backgroundgradient_cyan" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/ScheduleHomeImg"
                             android:layout_width="66dp"
-                            android:src="@drawable/noimg1"
-                            android:scaleType="centerCrop"
                             android:layout_height="66dp"
                             android:layout_margin="16dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/gear"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Пропуск"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="16dp"
-                            android:layout_marginVertical="8dp"
-                            android:layout_marginHorizontal="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/ScheduleHomeImg"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView4"
-                    android:layout_width="0dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp"
-                    app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintEnd_toStartOf="@id/cardView3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardView1">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/backgroundgradient_yellow" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/ServicesImg"
                             android:layout_width="match_parent"
-                            android:layout_height="66dp"
-                            android:layout_margin="16dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/noimg1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Столовые, кофейни"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
+                            android:layout_marginStart="100dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:fontFamily="@font/cygre_thin"
+                            android:textColor="@color/white"
                             android:textSize="16dp"
-                            android:layout_marginVertical="8dp"
-                            android:layout_marginHorizontal="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/ServicesImg"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                            android:text="Скоро вы сможете пользоваться сервисами КубГТУ с помощью мобильного приложения"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/OnlinePrintImg"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

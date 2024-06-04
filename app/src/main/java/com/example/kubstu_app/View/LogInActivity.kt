@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.sax.TextElementListener
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -14,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -51,7 +53,6 @@ class LogInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
 
         //Инициализация переменных
         stage1 = findViewById(R.id.stage1)
@@ -180,31 +181,26 @@ class LogInActivity : AppCompatActivity() {
 
                     when (newState) {
                         BottomSheetBehavior.STATE_COLLAPSED -> {
+                            GroupBtn.isEnabled = true
+                            stg1Params.topMargin = 0
+                            stage1.layoutParams = stg1Params
+                            stg2Params.topMargin = -2000
+                        }
 
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            stage2.alpha = 0f
                             //костыль убирающий 2 накладывающихся на друг друга слоя
                             stg1Params.topMargin = 0
                             stage1.layoutParams = stg1Params
                             stg2Params.topMargin = -2000
                             stage2.layoutParams = stg2Params
-
                             stage1.alpha = 1f
-                            GroupBtn.isEnabled = true
-                            findViewById<TextInputLayout>(R.id.GroupTB).isEnabled = true
-                        }
-
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                            stage1.alpha = 0f
-                            stage2.alpha = 0f
                             LogInBtn.isEnabled = false
                             GroupBtn.isEnabled = false
 
                             groupET.isEnabled = false
                             nameET.isEnabled = false
                             surnameET.isEnabled = false
-
-                            findViewById<TextInputLayout>(R.id.GroupTB).isEnabled = false
-                            findViewById<TextInputLayout>(R.id.NameTB).isEnabled = false
-                            findViewById<TextInputLayout>(R.id.SurNameTB).isEnabled = false
                         }
                     }
                 }

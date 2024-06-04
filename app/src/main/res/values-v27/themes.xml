@@ -19,14 +19,8 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="roundedImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
-    </style>
-    <style name="NavbarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/navbar_background_color</item>
-    </style>
     <style name="BottomNavigationViewLabelText" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">16sp</item> <!-- Увеличьте размер текста здесь -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
     </style>
 </resources>

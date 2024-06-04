@@ -37,7 +37,8 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var view: View
     lateinit var lessadapter: ScheduleLessonsAdapter
-    lateinit var spinner: Spinner
+
+    private var selectedDate: Calendar = Calendar.getInstance()
 
 
     var currYear: Int = 0
@@ -46,18 +47,18 @@ class ScheduleFragment : Fragment() {
     var currDay: Int = 0
 
     val monthToString = mapOf(
-        0 to "Январь",
-        1 to "Февраль",
-        2 to "Март",
-        3 to "Апрель",
-        4 to "Май",
-        5 to "Июнь",
-        6 to "Июль",
-        7 to "Август",
-        8 to "Сентябрь",
-        9 to "Октбрь",
-        10 to "Ноябрь",
-        11 to "Декабрь"
+        0 to "Января",
+        1 to "Февраля",
+        2 to "Марта",
+        3 to "Апреля",
+        4 to "Мая",
+        5 to "Июня",
+        6 to "Июля",
+        7 to "Августа",
+        8 to "Сентября",
+        9 to "Октбря",
+        10 to "Ноября",
+        11 to "Декабря"
     )
     val groups = arrayOf("21-КБ-ПР1", "21-КБ-ПР2")
 
@@ -123,15 +124,7 @@ class ScheduleFragment : Fragment() {
         currYear = currentDate.get(Calendar.YEAR)
         if (currMonth < 8) DuplcurrYear = currYear - 1
 
-        monthText.text = "$currDay, ${monthToString[currMonth]}"
-
-        //настраиваем выпадающее меню
-        spinner = view.findViewById(R.id.GroupSpinner)
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, groups)
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.setAdapter(adapter)
-
+        monthText.text = "$currDay ${monthToString[currMonth]}"
 
 
         //настраиваем recycling view
@@ -155,6 +148,8 @@ class ScheduleFragment : Fragment() {
             if (isAdded){
                 requireActivity().runOnUiThread {
                     lessadapter.submitList(list?.data?.sortedBy { it.pair })
+                    if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+                    else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
                 }
             }
         }
@@ -186,6 +181,8 @@ class ScheduleFragment : Fragment() {
                         if (isAdded){
                             requireActivity().runOnUiThread {
                                 lessadapter.submitList(list?.data?.sortedBy { it.pair })
+                                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+                                else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
                             }
                         }
                     }
@@ -194,7 +191,7 @@ class ScheduleFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
-        spinner.onItemSelectedListener = itemSelectedListener
+
 
         val monthText: TextView = view.findViewById(R.id.month)
 
@@ -204,7 +201,7 @@ class ScheduleFragment : Fragment() {
     }
     private fun showCal() {
         //получение сущности календаря
-        val cal = Calendar.getInstance()
+        val cal = selectedDate
 
 
         val dateListener = DatePickerDialog.OnDateSetListener{ _, year, month, dayofmonth ->
@@ -217,7 +214,7 @@ class ScheduleFragment : Fragment() {
             this.currYear = year
             this.currMonth = month
             this.currDay = dayofmonth
-            monthText.text = "$dayofmonth, ${monthToString[month]}"
+            monthText.text = "$dayofmonth ${monthToString[month]}"
             if (currMonth < 8) this.DuplcurrYear = currYear - 1
 
             //обработка выбранной даты будет здесь
@@ -230,6 +227,8 @@ class ScheduleFragment : Fragment() {
                 if (isAdded){
                     requireActivity().runOnUiThread {
                         lessadapter.submitList(list?.data?.sortedBy { it.pair })
+                        if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+                        else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
                     }
                 }
             }
@@ -239,22 +238,6 @@ class ScheduleFragment : Fragment() {
             dateListener, cal.get(Calendar.YEAR),
             cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
 
-        //установка максимальной даты для текущего семестра
-        cal.set(Calendar.YEAR, 2024)
-        cal.set(Calendar.MONTH, Calendar.JUNE)
-        cal.set(Calendar.DAY_OF_MONTH, 9)
-
-        //установка даты в календарь выбора
-        val maxDateInMillis = cal.timeInMillis
-        datePicker.datePicker.maxDate = maxDateInMillis
-
-        //аналогично для минимальной даты
-        cal.set(Calendar.YEAR, 2024)
-        cal.set(Calendar.MONTH, Calendar.FEBRUARY)
-        cal.set(Calendar.DAY_OF_MONTH, 5)
-
-        val minDateInMillis = cal.timeInMillis
-        datePicker.datePicker.minDate = minDateInMillis
 
         datePicker.show()
     }

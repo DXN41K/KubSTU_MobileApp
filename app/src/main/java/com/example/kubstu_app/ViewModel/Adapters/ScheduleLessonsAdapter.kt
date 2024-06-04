@@ -18,7 +18,7 @@ class ScheduleLessonsAdapter(val context: Context) : ListAdapter<LessonModel, Sc
     val colorsFromType = mapOf(
         "Лекции" to context.resources.getColor(R.color.HomeLection),
         "Лабораторные занятия" to context.resources.getColor(R.color.HomeLab),
-        "Практические занятия" to context.resources.getColor(R.color.HomePract)
+        "Практические занятия" to context.resources.getColor(R.color.HomeLab)
     )
     val elseColor = context.resources.getColor(R.color.HomeElse)
 
@@ -60,7 +60,8 @@ class ScheduleLessonsAdapter(val context: Context) : ListAdapter<LessonModel, Sc
             Smth.classroom,
             Smth.disc.disc_name,
             Smth.teacher,
-            Smth.pair
+            Smth.pair,
+            Smth.date
         )
     }
 

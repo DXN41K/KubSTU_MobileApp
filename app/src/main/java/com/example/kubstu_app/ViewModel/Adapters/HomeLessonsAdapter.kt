@@ -60,7 +60,8 @@ class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLe
             Smth.classroom,
             Smth.disc.disc_name,
             Smth.teacher,
-            Smth.pair
+            Smth.pair,
+            Smth.date
         )
     }
 

@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
             android:textStyle="bold"
             android:textSize="16dp"
             android:text="Кубанский государственный\nтехнологический университет"/>

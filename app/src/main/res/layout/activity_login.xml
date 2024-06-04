@@ -88,6 +88,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0"
                         android:gravity="center"
+                        android:fontFamily="@font/montserrat_semibold"
                         android:text="Кубанский государственный\nтехнологический университет"
                         android:textColor="@color/white"
                         android:textSize="16dp"
@@ -104,10 +105,10 @@
                 android:foregroundTint="@color/white"
                 android:text="Перейти в приложение"
                 android:textAllCaps="false"
+                android:fontFamily="@font/cygre_bold"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 android:letterSpacing="0.01"
-                android:textStyle="bold"
                 app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -161,10 +162,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Группа"
                     android:textColor="@android:color/background_dark"
-                    app:layout_constraintTop_toBottomOf="@+id/textView411"
-                    tools:ignore="MissingConstraints" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView411"/>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/GroupTB"
@@ -185,9 +188,12 @@
                         android:id="@+id/GroupTE"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:inputType="textPersonName"
+                        android:enabled="true"
+                        android:hint="Нажмите, чтобы выбрать группу"
+                        android:inputType="none"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black" />
+
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -199,6 +205,7 @@
                     android:text="Продолжить"
                     android:letterSpacing="0.01"
                     android:textAllCaps="false"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textSize="20dp"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -237,10 +244,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Фамилия"
+                    android:fontFamily="@font/montserrat_regular"
                     android:enabled="false"
                     android:textColor="@android:color/background_dark"
                     app:layout_constraintTop_toBottomOf="@+id/GroupTV"
-                    tools:ignore="MissingConstraints" />
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/SurNameTB"
@@ -274,6 +282,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Имя"
+                    android:fontFamily="@font/montserrat_regular"
                     android:enabled="false"
                     android:textColor="@android:color/background_dark"
                     app:layout_constraintStart_toStartOf="parent"
@@ -312,6 +321,7 @@
                     android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:backgroundTint="@color/blue"
                     android:layout_marginTop="20dp"
                     android:text="Войти"
@@ -342,7 +352,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11dp"
+                    android:textSize="10dp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:layout_marginStart="10dp"
                     android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"/>
 

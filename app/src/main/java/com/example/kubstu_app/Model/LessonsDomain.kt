@@ -1,6 +1,7 @@
 package com.example.kubstu_app.Model
 
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -11,7 +12,8 @@ data class LessonsDomain(
     var audience: String,
     val name: String,
     val teacher: String,
-    var pair: Int
+    var pair: Int,
+    var date: String
 )
 {
     var time: String
@@ -37,11 +39,12 @@ data class LessonsDomain(
         }
         time = pairMap[pair] ?: ElsePair
 
-        val timee = LocalDateTime.now()
+
 
         val formater = DateTimeFormatter.ofPattern("H:mm")
         val tim = LocalTime.parse(time, formater)
-        val dateTimeStart: LocalDateTime = timee.with(tim)
+        val date = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
+        val dateTimeStart = LocalDateTime.of(date, tim)
 
 
         durTimeStart = dateTimeStart.format(formater)
