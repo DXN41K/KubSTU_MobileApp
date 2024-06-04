@@ -16,7 +16,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE);
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
         val value: String? = sharedPreferences.getString("Users_group", null);
         if (value != null) {
 

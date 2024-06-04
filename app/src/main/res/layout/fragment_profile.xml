@@ -132,6 +132,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="10dp"
                     android:text="Сайт КубГТУ"
+                    android:textSize="16dp"
                     android:textAllCaps="false"
                     android:fontFamily="@font/montserrat_regular"
                     android:paddingHorizontal="24dp"
@@ -145,6 +146,7 @@
                     android:layout_marginStart="32dp"
                     android:text="Личный кабинет студента"
                     android:textAllCaps="false"
+                    android:textSize="16dp"
                     android:fontFamily="@font/montserrat_regular"
                     android:paddingHorizontal="24dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -222,32 +224,23 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:layout_marginTop="12dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/ExitBtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="100dp"
-                    android:gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="32dp"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:paddingHorizontal="24dp"
+                    android:text="Выйти"
+                    android:textAllCaps="false"
+                    android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/SettingsSiteBtn" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/blue_heart" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"
-                        android:textSize="10dp" />
-
-                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -257,4 +250,28 @@
 
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/blue_heart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"
+            android:textSize="10dp" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

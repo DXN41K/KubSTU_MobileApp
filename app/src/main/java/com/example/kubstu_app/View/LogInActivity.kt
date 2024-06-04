@@ -2,10 +2,13 @@ package com.example.kubstu_app.View
 
 import android.app.ActionBar.LayoutParams
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.sax.TextElementListener
+import android.text.Editable
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -44,15 +47,27 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var stg1Params: ConstraintLayout.LayoutParams
     private lateinit var stg2Params: ConstraintLayout.LayoutParams
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var ChooseGroupBtn: Button
+
     //статические поля
     companion object{
         val dip = 40f
         var px by Delegates.notNull<Float>()
+        val REQUEST_CODE = 8
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        ChooseGroupBtn = findViewById(R.id.ChooseGroupBtn)
+        ChooseGroupBtn.setOnClickListener {
+            val intent = Intent(this, ChooseGroupActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE)
+        }
+
+        sharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
 
         //Инициализация переменных
         stage1 = findViewById(R.id.stage1)
@@ -73,6 +88,22 @@ class LogInActivity : AppCompatActivity() {
         LogInBtn.setOnClickListener {
 
             //добавить прочтение фамилии и имени
+            if (nameET.text.isEmpty()) {
+                val textIL = findViewById<TextInputLayout>(R.id.NameTB)
+                textIL.error = "Введите имя"
+                return@setOnClickListener
+            }
+
+            if (surnameET.text.isEmpty()) {
+                val textIL = findViewById<TextInputLayout>(R.id.SurNameTB)
+                textIL.error = "Введите фамилию"
+                return@setOnClickListener
+            }
+
+            val editor = sharedPreferences.edit()
+            editor.putString("Users_name", "${nameET.text}")
+            editor.putString("Users_surname", "${surnameET.text}")
+            editor.apply()
 
             val mainIntent = Intent(this@LogInActivity, MainActivity::class.java)
             startActivity(mainIntent)
@@ -83,6 +114,11 @@ class LogInActivity : AppCompatActivity() {
 
             //добавить прочтение группы
 
+            if (groupET.text.isEmpty()) {
+                val textIL = findViewById<TextInputLayout>(R.id.GroupTB)
+                textIL.error = "Введите группу"
+                return@setOnClickListener
+            }
 
             stage1.alpha = 0f
 
@@ -300,4 +336,22 @@ class LogInActivity : AppCompatActivity() {
         }
     }
     //endregion
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            val result = data?.getStringExtra("result")
+
+            val textIL = findViewById<TextInputLayout>(R.id.GroupTB)
+            if (result == null) return
+            else {
+                val editor = sharedPreferences.edit()
+                editor.putString("Users_group", "${result}")
+                editor.apply()
+                textIL.hint = ""
+                textIL.editText?.setText(result)
+            }
+        }
+    }
 }

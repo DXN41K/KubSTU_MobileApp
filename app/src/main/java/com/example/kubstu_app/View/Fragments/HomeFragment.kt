@@ -1,5 +1,7 @@
 package com.example.kubstu_app.View.Fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,8 @@ class HomeFragment : Fragment() {
 
     lateinit var lessadapter: ScheduleLessonsAdapter
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +55,13 @@ class HomeFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        sharedPreferences = requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
+
+        val userNameTV = view.findViewById<TextView>(R.id.UserNametTV)
+        val name: String? = sharedPreferences.getString("Users_name", null)
+        val surname: String? = sharedPreferences.getString("Users_surname", null)
+
+        userNameTV.text = if (name == null  || surname == null) "Пользователь" else "${name} ${surname}"
 
         val settingsServices = view.findViewById<CardView>(R.id.servicebtn)
         settingsServices.setOnClickListener {
@@ -117,19 +128,30 @@ class HomeFragment : Fragment() {
                 .addConverterFactory(GsonConverterFactory.create()).build()
         val lessonAPI = retro.create(IAPI::class.java)
 
+        var year = getCurrentYear()
+        val month = getCurrentMonth()
+        var sem = 1
+
+        if (month < 9) {
+            year--
+            sem = 2
+        }
+
+        val group = sharedPreferences.getString("Users_group", null)
+
         var list: Products? = null
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                list = lessonAPI.GetNow("21-КБ-ПР1", 2023, 2)
+                list = lessonAPI.GetNow(group?:"", year, sem)
             }
             catch (e: Exception) {
             }
             if (isAdded){
             requireActivity().runOnUiThread {
                 lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.HomeNoPairText).alpha = 0f
-                else view.findViewById<TextView>(R.id.HomeNoPairText).alpha = 1f
+                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.HomeNoPairText).alpha = 1f
+                else view.findViewById<TextView>(R.id.HomeNoPairText).alpha = 0f
             }
             }
         }
@@ -149,6 +171,14 @@ class HomeFragment : Fragment() {
     fun getCurrentTime(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
+    }
+    fun getCurrentYear(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.YEAR)
+    }
+    fun getCurrentMonth(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.MONTH)
     }
 
 }

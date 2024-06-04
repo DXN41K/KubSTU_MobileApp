@@ -2,6 +2,7 @@ package com.example.kubstu_app.View.Fragments
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class ScheduleFragment : Fragment() {
 
     private var selectedDate: Calendar = Calendar.getInstance()
 
+    private lateinit var sharedPreferences: SharedPreferences
 
     var currYear: Int = 0
     var DuplcurrYear: Int = 0
@@ -60,9 +62,8 @@ class ScheduleFragment : Fragment() {
         10 to "Ноября",
         11 to "Декабря"
     )
-    val groups = arrayOf("21-КБ-ПР1", "21-КБ-ПР2")
 
-    var selectedGroup =groups[0]
+    private lateinit var selectedGroup: String
 
     var list: Products? = null
     lateinit var retro: Retrofit
@@ -115,14 +116,23 @@ class ScheduleFragment : Fragment() {
     ): View {
         view = inflater.inflate(R.layout.fragment_schedule, container, false)
 
+        sharedPreferences = requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
+
+        selectedGroup = sharedPreferences.getString("Users_group", null)!!
+
         //настраиваем обработчик выбора даты
         val monthText: TextView = view.findViewById(R.id.month)
 
         val currentDate = Calendar.getInstance()
+        var sem = 1
         currDay = currentDate.get(Calendar.DAY_OF_MONTH)
         currMonth = currentDate.get(Calendar.MONTH)
         currYear = currentDate.get(Calendar.YEAR)
-        if (currMonth < 8) DuplcurrYear = currYear - 1
+        if (currMonth < 8)
+        {
+            DuplcurrYear = currYear - 1
+            sem = 2
+        }
 
         monthText.text = "$currDay ${monthToString[currMonth]}"
 
@@ -141,15 +151,15 @@ class ScheduleFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                list = lessonAPI.GetThen(selectedGroup, DuplcurrYear, 2, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                list = lessonAPI.GetThen(selectedGroup, DuplcurrYear, sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
             }
             catch (e: Exception) {
             }
             if (isAdded){
                 requireActivity().runOnUiThread {
                     lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                    if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
-                    else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                    if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                    else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
                 }
             }
         }
@@ -181,8 +191,8 @@ class ScheduleFragment : Fragment() {
                         if (isAdded){
                             requireActivity().runOnUiThread {
                                 lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
-                                else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                                else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
                             }
                         }
                     }
@@ -227,8 +237,8 @@ class ScheduleFragment : Fragment() {
                 if (isAdded){
                     requireActivity().runOnUiThread {
                         lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                        if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
-                        else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                        if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
+                        else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
                     }
                 }
             }

@@ -20,4 +20,10 @@ interface IAPI {
         @Query("semestr") sem: Int,
         @Query("date_start") start: String,
         @Query("date_end") end: String) : Products
+
+    @GET("timetable/gr-list")
+    suspend fun GetGroups(
+        @Query("ugod") year: Int
+    ) : GroupList
+
 }

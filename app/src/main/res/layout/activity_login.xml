@@ -168,19 +168,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView411"/>
 
+                <Button
+                    android:id="@+id/ChooseGroupBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/blue"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:letterSpacing="0.01"
+                    android:text="Выбрать"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView511" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/GroupTB"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/HintStart"
                     app:boxStrokeColor="@color/blue"
                     app:boxStrokeWidthFocused="1dp"
                     app:endIconMode="clear_text"
+                    android:layout_marginEnd="10dp"
+                    android:enabled="false"
                     app:errorEnabled="true"
                     app:helperTextTextColor="@color/blue"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/ChooseGroupBtn"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView511">
 
@@ -188,7 +203,7 @@
                         android:id="@+id/GroupTE"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:enabled="true"
+                        android:enabled="false"
                         android:hint="Нажмите, чтобы выбрать группу"
                         android:inputType="none"
                         android:textColor="@color/black"
