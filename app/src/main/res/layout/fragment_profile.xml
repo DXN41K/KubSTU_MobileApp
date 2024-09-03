@@ -256,6 +256,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:gravity="center"
+        android:layout_marginHorizontal="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -270,7 +271,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"
+            android:gravity="center"
+            android:text="Разработано Управлением информатизации КубГТУ и студентами кафедры информационных систем и программирования КубГТУ"
             android:textSize="10dp" />
 
     </LinearLayout>

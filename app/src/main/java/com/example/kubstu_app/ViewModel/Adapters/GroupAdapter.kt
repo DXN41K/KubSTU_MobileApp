@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.GroupModel
+import com.example.kubstu_app.Model.timeTable.GroupModel
 import com.example.kubstu_app.R
 
 class GroupAdapter(val context: Context, val listener: Listener) : ListAdapter<GroupModel, GroupAdapter.GroupViewHolder>(Comparator()) {

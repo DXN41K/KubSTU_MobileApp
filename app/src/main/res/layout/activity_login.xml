@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rooty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.LogInActivity">
@@ -353,12 +354,13 @@
                     android:id="@+id/terms_and_conditions_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Нажимая кнопку «Войти», вы принимаете условия использования и даете согласие ФГБОУ ВО «КубГТУ» на обработку ваших персональных данных в соотвествии с его политикой"
+                    android:textColor="@color/cyan"
+                    android:textSize="11dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textSize="11dp"
-                    android:autoLink="web"
                     app:layout_constraintTop_toBottomOf="@id/LogInBtn" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -382,7 +384,8 @@
                     android:textSize="10dp"
                     android:fontFamily="@font/montserrat_regular"
                     android:layout_marginStart="10dp"
-                    android:text="Разработано Управлением информатизации КубГТУ\nи студентами института КСИБ КубГТУ"/>
+                    android:gravity="center"
+                    android:text="Разработано Управлением информатизации КубГТУ и студентами кафедры информационных систем и программирования КубГТУ"/>
 
             </LinearLayout>
 

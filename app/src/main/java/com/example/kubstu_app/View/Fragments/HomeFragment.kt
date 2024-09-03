@@ -8,36 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.IAPI
-import com.example.kubstu_app.Model.Products
+import com.example.kubstu_app.ViewModel.Retrofit.IAPI
+import com.example.kubstu_app.Model.timeTable.Products
 import com.example.kubstu_app.Model.SpecialDomain
 import com.example.kubstu_app.R
-import com.example.kubstu_app.ViewModel.Adapters.HomeLessonsAdapter
-import com.example.kubstu_app.ViewModel.Adapters.HomeSpecialAdapter
 import com.example.kubstu_app.ViewModel.Adapters.ScheduleLessonsAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.util.Calendar
 import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
@@ -143,7 +134,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                list = lessonAPI.GetNow(group?:"", year, sem)
+                list = lessonAPI.getNow(group?:"", year, sem)
             }
             catch (e: Exception) {
             }

@@ -8,30 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.IAPI
-import com.example.kubstu_app.Model.Products
+import com.example.kubstu_app.ViewModel.Retrofit.IAPI
+import com.example.kubstu_app.Model.timeTable.Products
 import com.example.kubstu_app.R
-import com.example.kubstu_app.ViewModel.Adapters.HomeLessonsAdapter
 import com.example.kubstu_app.ViewModel.Adapters.ScheduleLessonsAdapter
+import com.example.kubstu_app.ViewModel.Retrofit.retrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.security.KeyStore
-import java.security.cert.CertificateFactory
 import java.util.Calendar
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
 class ScheduleFragment : Fragment() {
@@ -47,6 +38,7 @@ class ScheduleFragment : Fragment() {
     var DuplcurrYear: Int = 0
     var currMonth: Int = 0
     var currDay: Int = 0
+    var _sem: Int = 0
 
     val monthToString = mapOf(
         0 to "Января",
@@ -73,39 +65,9 @@ class ScheduleFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val http = HttpLoggingInterceptor()
-        http.level = HttpLoggingInterceptor.Level.BODY
 
-        val clientBuilder = OkHttpClient.Builder()
-
-        val cf = CertificateFactory.getInstance("X.509")
-        val cert = requireContext().resources.openRawResource(R.raw.kubsturu)
-
-        try {
-            val ca = cf.generateCertificate(cert)
-            val keyStoreType = KeyStore.getDefaultType()
-            val keyStore = KeyStore.getInstance(keyStoreType)
-            keyStore.load(null, null)
-            keyStore.setCertificateEntry("ca", ca)
-
-            val tmfAlgo = TrustManagerFactory.getDefaultAlgorithm()
-            val tmf = TrustManagerFactory.getInstance(tmfAlgo)
-            tmf.init(keyStore)
-
-            val sslContext = SSLContext.getInstance("TLS")
-            sslContext.init(null, tmf.trustManagers, null)
-
-            clientBuilder.sslSocketFactory(sslContext.socketFactory, tmf.trustManagers[0] as X509TrustManager)
-        } finally {
-            if (cert != null) {
-                cert.close()
-            }
-        }
-
-        client = clientBuilder.addInterceptor(http).build()
-
-        retro = Retrofit.Builder().baseUrl("https://elkaf.kubstu.ru/api/").client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        retrofitClient.Initialize(context)
+        retro = retrofitClient.getClient()
         lessonAPI = retro.create(IAPI::class.java)
     }
 
@@ -124,14 +86,15 @@ class ScheduleFragment : Fragment() {
         val monthText: TextView = view.findViewById(R.id.month)
 
         val currentDate = Calendar.getInstance()
-        var sem = 1
         currDay = currentDate.get(Calendar.DAY_OF_MONTH)
         currMonth = currentDate.get(Calendar.MONTH)
         currYear = currentDate.get(Calendar.YEAR)
+        DuplcurrYear = currYear
+        _sem = 1
         if (currMonth < 8)
         {
             DuplcurrYear = currYear - 1
-            sem = 2
+            _sem = 2
         }
 
         monthText.text = "$currDay ${monthToString[currMonth]}"
@@ -151,7 +114,7 @@ class ScheduleFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                list = lessonAPI.GetThen(selectedGroup, DuplcurrYear, sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
             }
             catch (e: Exception) {
             }
@@ -184,7 +147,7 @@ class ScheduleFragment : Fragment() {
                     //реализация при смене
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
-                            list = lessonAPI.GetThen(selectedGroup, DuplcurrYear, 2, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                            list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
                         }
                         catch (e: Exception) {
                         }
@@ -221,16 +184,22 @@ class ScheduleFragment : Fragment() {
 
             val monthText = view.findViewById<TextView>(R.id.month)
 
+            this._sem = 1
             this.currYear = year
+
+            this.DuplcurrYear = this.currYear
             this.currMonth = month
             this.currDay = dayofmonth
             monthText.text = "$dayofmonth ${monthToString[month]}"
-            if (currMonth < 8) this.DuplcurrYear = currYear - 1
+            if (currMonth < 8) {
+                this.DuplcurrYear = currYear - 1
+                _sem = 2
+            }
 
             //обработка выбранной даты будет здесь
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    list = lessonAPI.GetThen(selectedGroup, DuplcurrYear, 2, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                    list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
                 }
                 catch (e: Exception) {
                 }

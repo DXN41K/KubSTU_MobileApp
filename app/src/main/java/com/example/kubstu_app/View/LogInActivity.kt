@@ -24,14 +24,17 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kubstu_app.ViewModel.Adapters.OnBoardingAdapter
@@ -61,6 +64,8 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var ChooseGroupBtn: Button
 
+    private lateinit var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener
+
     //статические поля
     companion object{
         val dip = 40f
@@ -74,44 +79,15 @@ class LogInActivity : AppCompatActivity() {
 
         val termsAndConditionsTextView = findViewById<TextView>(R.id.terms_and_conditions_text_view)
 
-        val longText = "Нажимая кнопку «Войти», вы принимаете условия использования и даете согласие ФГБОУ ВО «КубГТУ» на обработку ваших персональных данных в соотвествии с его политикой"
-        val termsAndConditionsText = SpannableString(longText)
-        val matcher = Patterns.WEB_URL.matcher(longText)
-        var matchStart: Int = 39
-        var matchEnd: Int = 59
+        //URL НА ВЕСЬ ЛЕЙБЛ РАЗДЕЛИТЬ НЕ ПОЛУЧИЛОСЬ
+        var url = "https://kubstu.ru/app-terms"
 
-        while (matcher.find()) {
-            matchStart = matcher.start(1)
-            matchEnd = matcher.end()
 
-            var url = "https://kubstu.ru/app-terms"
-
-            val clickableSpan: ClickableSpan = object : ClickableSpan () {
-                override fun onClick(widget: View) {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
-                }
-
-                override fun updateDrawState(ds: TextPaint) {
-                    super.updateDrawState(ds)
-                    ds.color = Color.BLUE
-                    ds.isUnderlineText = true
-                }
-            }
-            termsAndConditionsText.setSpan(clickableSpan, matchStart, matchEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
+        termsAndConditionsTextView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            startActivity(intent)
         }
-        findViewById<TextView>(R.id.terms_and_conditions_text_view).text = termsAndConditionsText
-        findViewById<TextView>(R.id.terms_and_conditions_text_view).movementMethod = LinkMovementMethod.getInstance()
-
-        /*
-
-        termsAndConditionsText.setSpan(URLSpan("https://kubstu.ru/app-terms"), 39, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        termsAndConditionsText.setSpan(URLSpan("https://kubstu.ru/s-637"), 150, 162, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        termsAndConditionsTextView.text = termsAndConditionsText
-        termsAndConditionsTextView.setMovementMethod(LinkMovementMethod.getInstance())*/
 
 
 
@@ -298,6 +274,31 @@ class LogInActivity : AppCompatActivity() {
         })
 
 
+//        val rootLayout = findViewById<CoordinatorLayout>(R.id.rooty)
+//
+//        // Создайте слушатель, который будет вызываться при появлении клавиатуры
+//        keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+//            val visibleHeight = rootLayout.rootView.height
+//
+//            var keyboardHeight = (visibleHeight - rootLayout.height).toFloat()
+//
+//            if (keyboardHeight > 0) {
+//                // Клавиатура открыта
+//                bottomSheetBehavior2.peekHeight += keyboardHeight.toInt()
+//                // Обновить состояние BottomSheetView
+//                bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
+//            }
+//            else {
+//                // Клавиатура скрыта
+//                // Здесь можно разместить действия после скрытия клавиатуры
+//                bottomSheetBehavior2.peekHeight -= keyboardHeight.toInt()
+//                bottomSheetBehavior2.state = BottomSheetBehavior.STATE_COLLAPSED
+//            }
+//        }
+
+//        // Добавьте слушатель к представлению, которое содержит элементы управления
+//        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardListener)
+
         //инициализация ViewPager
         layoutOnBoardingIndicators = findViewById(R.id.LayoutOnBoardingIndicator)
 
@@ -390,6 +391,12 @@ class LogInActivity : AppCompatActivity() {
         }
     }
     //endregion
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        val rootLayout = findViewById<CoordinatorLayout>(R.id.rooty)
+//        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardListener)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

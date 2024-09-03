@@ -2,20 +2,14 @@ package com.example.kubstu_app.View
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.GroupList
-import com.example.kubstu_app.Model.GroupModel
-import com.example.kubstu_app.Model.IAPI
-import com.example.kubstu_app.Model.Products
+import com.example.kubstu_app.Model.timeTable.GroupList
+import com.example.kubstu_app.Model.timeTable.GroupModel
+import com.example.kubstu_app.ViewModel.Retrofit.IAPI
 import com.example.kubstu_app.R
 import com.example.kubstu_app.ViewModel.Adapters.GroupAdapter
-import com.example.kubstu_app.ViewModel.Adapters.ScheduleLessonsAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,7 +77,7 @@ class ChooseGroupActivity : AppCompatActivity(), GroupAdapter.Listener {
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                list = lessonAPI.GetGroups(2023)
+                list = lessonAPI.getGroups(2023)
             }
             catch (e: Exception) {
             }

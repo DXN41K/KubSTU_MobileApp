@@ -1,4 +1,4 @@
-package com.example.kubstu_app.Model
+package com.example.kubstu_app.Model.timeTable
 
 data class GroupModel(
     val id: Int,
