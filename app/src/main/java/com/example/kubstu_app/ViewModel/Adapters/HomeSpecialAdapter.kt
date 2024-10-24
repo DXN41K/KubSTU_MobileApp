@@ -20,12 +20,12 @@ class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context:
 
     inner class TextSpecialViewHolder(itemView: View) : ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.SpecialNoImgTitle)
-        private val descriptionTextView: TextView = itemView.findViewById(R.id.SpecialNoImgSubtitle)
+        //private val descriptionTextView: TextView = itemView.findViewById(R.id.SpecialNoImgSubtitle)
         private val backGround: ImageView = itemView.findViewById(R.id.BackgroundNoImageView)
         fun bind(data: SpecialDomain) {
             backGround.setImageResource(data.Background)
             titleTextView.text = data.Title
-            descriptionTextView.text = data.SubTitle
+//            descriptionTextView.text = data.SubTitle
         }
     }
     inner class PicSpecialViewHolder(itemView: View) : ViewHolder(itemView) {
@@ -45,12 +45,12 @@ class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context:
         when (viewType) {
             TYPE_WITH_IMAGE -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.viewholder_picspecialhome, parent, false)
+                    .inflate(R.layout.viewholder_specialhome2_pic, parent, false)
                 PicSpecialViewHolder(view)
             }
             TYPE_WITHOUT_IMAGE -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.viewholder_specialhome, parent, false)
+                    .inflate(R.layout.viewholder_specialhome2, parent, false)
                 TextSpecialViewHolder(view)
             }
             else -> throw IllegalArgumentException("Invalid view type")

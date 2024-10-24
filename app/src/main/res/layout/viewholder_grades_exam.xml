@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/GradesName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textStyle="bold"
+        android:text="Современные проблемы искусственного интеллекта"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/GradesType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="Экзамен"
+        android:textColor="@color/NewColor_DarkDarkGray"
+        android:textSize="12dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GradesName" />
+
+    <TextView
+        android:id="@+id/GradesGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/sf_pro_display_bold"
+        android:text="5"
+        android:textSize="16dp"
+        android:textColor="@color/NewColor_Green"
+        app:layout_constraintBottom_toBottomOf="@+id/GradesName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/GradesName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

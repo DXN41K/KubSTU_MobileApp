@@ -4,14 +4,19 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import com.example.kubstu_app.ViewModel.Retrofit.IAPI
 import com.example.kubstu_app.Model.timeTable.Products
 import com.example.kubstu_app.R
@@ -20,8 +25,11 @@ import com.example.kubstu_app.ViewModel.Retrofit.retrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import java.util.Calendar
 
 
@@ -29,6 +37,7 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var view: View
     lateinit var lessadapter: ScheduleLessonsAdapter
+    lateinit var tomorrowBtn: Button
 
     private var selectedDate: Calendar = Calendar.getInstance()
 
@@ -39,8 +48,20 @@ class ScheduleFragment : Fragment() {
     var currMonth: Int = 0
     var currDay: Int = 0
     var _sem: Int = 0
+    var currDayOfWeek: Int = 1
+    var isToday: Boolean = true
 
-    val monthToString = mapOf(
+    val dayOfWeekToString = mapOf(
+        1 to "Воскресенье",
+        2 to "Понедельник",
+        3 to "Вторник",
+        4 to "Среда",
+        5 to "Четверг",
+        6 to "Пятница",
+        7 to "Суббота",
+    )
+
+    private val monthToString = mapOf(
         0 to "Января",
         1 to "Февраля",
         2 to "Марта",
@@ -50,16 +71,15 @@ class ScheduleFragment : Fragment() {
         6 to "Июля",
         7 to "Августа",
         8 to "Сентября",
-        9 to "Октбря",
+        9 to "Октября",
         10 to "Ноября",
-        11 to "Декабря"
+        11 to "Декабря",
     )
 
     private lateinit var selectedGroup: String
 
     var list: Products? = null
     lateinit var retro: Retrofit
-    lateinit var client: OkHttpClient
     lateinit var lessonAPI: IAPI
 
 
@@ -78,9 +98,10 @@ class ScheduleFragment : Fragment() {
     ): View {
         view = inflater.inflate(R.layout.fragment_schedule, container, false)
 
-        sharedPreferences = requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
 
-        selectedGroup = sharedPreferences.getString("Users_group", null)!!
+        selectedGroup = sharedPreferences.getString("gr", null)!!
 
         //настраиваем обработчик выбора даты
         val monthText: TextView = view.findViewById(R.id.month)
@@ -89,15 +110,23 @@ class ScheduleFragment : Fragment() {
         currDay = currentDate.get(Calendar.DAY_OF_MONTH)
         currMonth = currentDate.get(Calendar.MONTH)
         currYear = currentDate.get(Calendar.YEAR)
+        currDayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK)
         DuplcurrYear = currYear
+
+        view.findViewById<TextView>(R.id.isOddWeekText).text =
+            when (getCurrentStudyWeek(currDay, currMonth, currYear) % 2) {
+                0 -> "Четная неделя"
+                1 -> "Нечетная неделя"
+                else -> "Неделя не распознана"
+            }
+
         _sem = 1
-        if (currMonth < 8)
-        {
+        if (currMonth < 8) {
             DuplcurrYear = currYear - 1
             _sem = 2
         }
 
-        monthText.text = "$currDay ${monthToString[currMonth]}"
+        monthText.text = "${dayOfWeekToString[currDayOfWeek]}, $currDay ${monthToString[currMonth]}"
 
 
         //настраиваем recycling view
@@ -105,25 +134,54 @@ class ScheduleFragment : Fragment() {
         val LessRecyclerView: RecyclerView = view.findViewById(R.id.LessonsSchefuleRecyclingView)
 
         //Важно!!! без этого не отображалось!!
-        LessRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        LessRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         lessadapter = ScheduleLessonsAdapter(requireContext())
         LessRecyclerView.adapter = lessadapter
 
 
-
-        CoroutineScope(Dispatchers.IO).launch {
+        var isZero = false
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                list = lessonAPI.getThen(
+                    selectedGroup,
+                    DuplcurrYear,
+                    _sem,
+                    "$currYear-${currMonth + 1}-$currDay",
+                    "$currYear-${currMonth + 1}-$currDay"
+                )
+                isZero = list?.data?.size == 0
+            } catch (e: Exception) {
             }
-            catch (e: Exception) {
-            }
-            if (isAdded){
+            if (isAdded) {
                 requireActivity().runOnUiThread {
-                    lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                    if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
-                    else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+
+                    val lessonsList = list?.data?.sortedBy { it.pair }
+                        ?: emptyList() // Если нет данных, возвращаем пустой список
+                    lessadapter.submitList(lessonsList)
+                    if (isZero) {
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.GONE
+                    } else {
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.VISIBLE
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
+                    }
                 }
+            }
+        }
+
+        tomorrowBtn = view.findViewById(R.id.NextDay_Schedule_Btn)
+
+        tomorrowBtn.setOnClickListener {
+            if (isToday) {
+                getTomorrow()
+                tomorrowBtn.setText("Перейти к расписанию на сегодня")
+            } else {
+                returnToday()
+                tomorrowBtn.setText("Перейти к расписанию на завтра")
             }
         }
 
@@ -144,18 +202,41 @@ class ScheduleFragment : Fragment() {
                     id: Long
                 ) {
                     selectedGroup = parent.getItemAtPosition(position) as String
+                    var isZero = false
                     //реализация при смене
-                    CoroutineScope(Dispatchers.IO).launch {
+                    lifecycleScope.launch(Dispatchers.IO) {
                         try {
-                            list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                            list = lessonAPI.getThen(
+                                selectedGroup,
+                                DuplcurrYear,
+                                _sem,
+                                "$currYear-${currMonth + 1}-$currDay",
+                                "$currYear-${currMonth + 1}-$currDay"
+                            )
+                            isZero = list?.data?.size == 0
+                        } catch (e: Exception) {
                         }
-                        catch (e: Exception) {
-                        }
-                        if (isAdded){
+                        if (isAdded) {
                             requireActivity().runOnUiThread {
-                                lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                                if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
-                                else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+                                if (isAdded) {
+                                    requireActivity().runOnUiThread {
+
+                                        val lessonsList = list?.data?.sortedBy { it.pair }
+                                            ?: emptyList() // Если нет данных, возвращаем пустой список
+                                        lessadapter.submitList(lessonsList)
+                                        if (isZero) {
+                                            view.findViewById<View>(R.id.noScheduleItem).visibility =
+                                                View.VISIBLE
+                                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                                                View.GONE
+                                        } else {
+                                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                                                View.VISIBLE
+                                            view.findViewById<View>(R.id.noScheduleItem).visibility =
+                                                View.GONE
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -166,18 +247,19 @@ class ScheduleFragment : Fragment() {
             }
 
 
-        val monthText: TextView = view.findViewById(R.id.month)
+        val ScheduleBtn: ImageButton = view.findViewById(R.id.Schedule_Btn)
 
-        monthText.setOnClickListener{
+        ScheduleBtn.setOnClickListener {
             showCal()
         }
     }
+
     private fun showCal() {
         //получение сущности календаря
         val cal = selectedDate
 
 
-        val dateListener = DatePickerDialog.OnDateSetListener{ _, year, month, dayofmonth ->
+        val dateListener = DatePickerDialog.OnDateSetListener { _, year, month, dayofmonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, dayofmonth)
@@ -190,35 +272,233 @@ class ScheduleFragment : Fragment() {
             this.DuplcurrYear = this.currYear
             this.currMonth = month
             this.currDay = dayofmonth
-            monthText.text = "$dayofmonth ${monthToString[month]}"
+            this.currDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+
+            checkIfToday(this.currYear, this.currMonth, this.currDay)
+
+            if (isToday) {
+                tomorrowBtn.setText("Перейти к расписанию на завтра")
+            } else {
+                tomorrowBtn.setText("Перейти к расписанию на сегодня")
+            }
+
+            view.findViewById<TextView>(R.id.isOddWeekText).text =
+                when (getCurrentStudyWeek(currDay, currMonth, currYear) % 2) {
+                    0 -> "Четная неделя"
+                    1 -> "Нечетная неделя"
+                    else -> "Неделя не распознана"
+                }
+
+            monthText.text =
+                "${dayOfWeekToString[currDayOfWeek]}, $currDay ${monthToString[currMonth]}"
+
             if (currMonth < 8) {
                 this.DuplcurrYear = currYear - 1
                 _sem = 2
             }
 
+            var isZero = false
             //обработка выбранной даты будет здесь
-            CoroutineScope(Dispatchers.IO).launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    list = lessonAPI.getThen(selectedGroup, DuplcurrYear, _sem, "$currYear-${currMonth+1}-$currDay", "$currYear-${currMonth+1}-$currDay")
+                    list = lessonAPI.getThen(
+                        selectedGroup,
+                        DuplcurrYear,
+                        _sem,
+                        "$currYear-${currMonth + 1}-$currDay",
+                        "$currYear-${currMonth + 1}-$currDay"
+                    )
+                    isZero = list?.data?.size == 0
+                } catch (e: Exception) {
+                    Log.e("eeee", "${e.message}")
                 }
-                catch (e: Exception) {
-                }
-                if (isAdded){
+                if (isAdded) {
                     requireActivity().runOnUiThread {
-                        lessadapter.submitList(list?.data?.sortedBy { it.pair })
-                        if (lessadapter.itemCount == 0) view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 1f
-                        else view.findViewById<TextView>(R.id.ScheduleNoPairText).alpha = 0f
+
+                        val lessonsList = list?.data?.sortedBy { it.pair }
+                            ?: emptyList() // Если нет данных, возвращаем пустой список
+                        lessadapter.submitList(lessonsList)
+                        if (isZero) {
+                            view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
+                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                                View.GONE
+                        } else {
+                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                                View.VISIBLE
+                            view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
+                        }
                     }
                 }
             }
         }
 
-        val datePicker = DatePickerDialog(requireContext(),
+        val datePicker = DatePickerDialog(
+            requireContext(),
             dateListener, cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+            cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)
+        )
 
 
         datePicker.show()
     }
 
+    fun getCurrentStudyWeek(currDay: Int, currMonth: Int, currYear: Int): Int {
+        // Приведение месяца из Calendar (от 0 до 11) к формату LocalDate (от 1 до 12)
+        val currentDate = LocalDate.of(currYear, currMonth + 1, currDay)
+
+        // Определяем 1 сентября текущего года
+        val firstSeptember = LocalDate.of(currYear, 9, 1)
+
+        // Если текущая дата до 1 сентября, используем 1 сентября прошлого года
+        val startDate = if (currentDate.isBefore(firstSeptember)) {
+            LocalDate.of(currYear - 1, 9, 1)
+        } else {
+            firstSeptember
+        }
+
+        // Разница в неделях
+        val weeks = ChronoUnit.WEEKS.between(startDate, currentDate)
+
+        return weeks.toInt()
+    }
+
+    fun returnToday() {
+        val today = Calendar.getInstance()
+        isToday = true
+        selectedDate = today
+
+        this.currYear = today.get(Calendar.YEAR)
+        this.currMonth = today.get(Calendar.MONTH)
+        this.currDay = today.get(Calendar.DAY_OF_MONTH)
+        this.currDayOfWeek = today.get(Calendar.DAY_OF_WEEK)
+
+        this.currYear = today.get(Calendar.YEAR)
+        this.currMonth = today.get(Calendar.MONTH)
+        this.currDay = today.get(Calendar.DAY_OF_MONTH)
+        this.currDayOfWeek = today.get(Calendar.DAY_OF_WEEK)
+
+        val monthText = view.findViewById<TextView>(R.id.month)
+
+        view.findViewById<TextView>(R.id.isOddWeekText).text =
+            when (getCurrentStudyWeek(currDay, currMonth, currYear) % 2) {
+                0 -> "Четная неделя"
+                1 -> "Нечетная неделя"
+                else -> "Неделя не распознана"
+            }
+
+        monthText.text =
+            "${dayOfWeekToString[currDayOfWeek]}, $currDay ${monthToString[currMonth]}"
+
+        if (currMonth < 8) {
+            this.DuplcurrYear = currYear - 1
+            _sem = 2
+        }
+
+        var isZero = false
+        //обработка выбранной даты будет здесь
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                list = lessonAPI.getThen(
+                    selectedGroup,
+                    DuplcurrYear,
+                    _sem,
+                    "$currYear-${currMonth + 1}-$currDay",
+                    "$currYear-${currMonth + 1}-$currDay"
+                )
+                isZero = list?.data?.size == 0
+            } catch (e: Exception) {
+                Log.e("eeee", "${e.message}")
+            }
+            if (isAdded) {
+                requireActivity().runOnUiThread {
+
+                    val lessonsList = list?.data?.sortedBy { it.pair }
+                        ?: emptyList() // Если нет данных, возвращаем пустой список
+                    lessadapter.submitList(lessonsList)
+                    if (isZero) {
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.GONE
+                    } else {
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.VISIBLE
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    fun getTomorrow() {
+        val today = Calendar.getInstance()
+        today.add(Calendar.DAY_OF_MONTH, 1)
+        isToday = false
+        selectedDate = today
+
+        this.currYear = today.get(Calendar.YEAR)
+        this.currMonth = today.get(Calendar.MONTH)
+        this.currDay = today.get(Calendar.DAY_OF_MONTH)
+        this.currDayOfWeek = today.get(Calendar.DAY_OF_WEEK)
+
+        val monthText = view.findViewById<TextView>(R.id.month)
+
+        view.findViewById<TextView>(R.id.isOddWeekText).text =
+            when (getCurrentStudyWeek(currDay, currMonth, currYear) % 2) {
+                0 -> "Четная неделя"
+                1 -> "Нечетная неделя"
+                else -> "Неделя не распознана"
+            }
+
+        monthText.text =
+            "${dayOfWeekToString[currDayOfWeek]}, $currDay ${monthToString[currMonth]}"
+
+        if (currMonth < 8) {
+            this.DuplcurrYear = currYear - 1
+            _sem = 2
+        }
+
+        var isZero = false
+        //обработка выбранной даты будет здесь
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                list = lessonAPI.getThen(
+                    selectedGroup,
+                    DuplcurrYear,
+                    _sem,
+                    "$currYear-${currMonth + 1}-$currDay",
+                    "$currYear-${currMonth + 1}-$currDay"
+                )
+                isZero = list?.data?.size == 0
+            } catch (e: Exception) {
+                Log.e("eeee", "${e.message}")
+            }
+            if (isAdded) {
+                requireActivity().runOnUiThread {
+
+                    val lessonsList = list?.data?.sortedBy { it.pair }
+                        ?: emptyList() // Если нет данных, возвращаем пустой список
+                    lessadapter.submitList(lessonsList)
+                    if (isZero) {
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.GONE
+                    } else {
+                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
+                            View.VISIBLE
+                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkIfToday(year: Int, month: Int, dayOfMonth: Int) {
+        // Получаем текущую дату
+        val today = Calendar.getInstance()
+
+        // Сравниваем переданную дату с текущей
+        isToday = (year == today.get(Calendar.YEAR) &&
+                month == today.get(Calendar.MONTH) &&
+                dayOfMonth == today.get(Calendar.DAY_OF_MONTH))
+    }
 }

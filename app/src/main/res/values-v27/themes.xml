@@ -23,4 +23,12 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_semibold</item>
     </style>
+    <style name="CustomTabText" parent="TextAppearance.Design.Tab">
+        <!-- Убираем Caps Lock -->
+        <item name="textAllCaps">false</item>
+        <!-- Задаём шрифт -->
+        <item name="fontFamily">@font/sf_pro_display_regular</item>
+        <!-- Размер текста -->
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

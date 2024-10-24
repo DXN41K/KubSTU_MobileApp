@@ -1,17 +1,9 @@
 package com.example.kubstu_app.ViewModel.Retrofit
 
-import com.example.kubstu_app.Model.timeTable.GroupList
-import com.example.kubstu_app.Model.student.LoginResponse
-import com.example.kubstu_app.Model.student.Semester
-import com.example.kubstu_app.Model.student.UserResponse
-import com.example.kubstu_app.Model.student.Work
-import com.example.kubstu_app.Model.timeTable.Products
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Query
+import com.example.kubstu_app.Model.dic.*
+import com.example.kubstu_app.Model.timeTable.*
+import com.example.kubstu_app.Model.student.*
+import retrofit2.http.*
 
 interface IAPI {
 
@@ -50,7 +42,7 @@ interface IAPI {
      * @param ugod Уч. год.
      * @return GroupList - модель данных.
      */
-    @GET("timetable/gr-list")
+    @GET("dic/gr-list")
     suspend fun getGroups(
         @Query("ugod") year: Int
     ) : GroupList
@@ -108,4 +100,11 @@ interface IAPI {
     suspend fun getUploadedWorks(
         @Header("Authorization") accessToken: String
     ): List<Work>
+
+    /**
+     * Запрашивает список существующих направлений.
+     * @return List<SpecsModel>- модель данных.
+     */
+    @GET("dic/spec-list")
+    suspend fun getSpecs(): SpecsResponse
 }

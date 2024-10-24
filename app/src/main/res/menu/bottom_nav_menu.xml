@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Главная"
-        android:icon="@drawable/hom"
+        android:icon="@drawable/home"
         android:id="@+id/home"/>
     <item android:title="Расписание"
-        android:icon="@drawable/sched"
+        android:icon="@drawable/schedule"
         android:id="@+id/schedule"/>
-    <item android:title="Настройки"
-        android:icon="@drawable/prop"
-        android:id="@+id/settings"/>
+    <item android:title="Зачетка"
+        android:icon="@drawable/grades"
+        android:id="@+id/grades"/>
+    <item android:title="Профиль"
+        android:icon="@drawable/profile"
+        android:id="@+id/profile"/>
 </menu>

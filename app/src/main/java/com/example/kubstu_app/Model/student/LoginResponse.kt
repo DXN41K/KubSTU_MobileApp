@@ -10,5 +10,6 @@ data class LoginResponse(
     val inst_id: Int,
     val formaob_id: Int,
     val access_token: String,
-    val refresh_token: String
+    val refresh_token: String,
+    val spec_id: Int
 )

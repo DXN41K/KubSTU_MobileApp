@@ -3,37 +3,37 @@ package com.example.kubstu_app.View
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.nfc.Tag
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.kubstu_app.Model.student.LoginResponse
-import com.example.kubstu_app.Model.student.UserResponse
 import com.example.kubstu_app.R
 import com.example.kubstu_app.ViewModel.Retrofit.IAPI
 import com.example.kubstu_app.ViewModel.Retrofit.retrofitClient
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 
 class SplashScreen : AppCompatActivity() {
 
     // задержка при загрузке экрана
-    private val SPLASH_DELAY: Long = 2000
+    private val SPLASH_DELAY: Long = 500
 
-    private lateinit var user: UserResponse
-    private lateinit var tokens: LoginResponse
+    private lateinit var _user: LoginResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
         // создаем/получаем преференсы
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(
+            "Users_preferences",
+            Context.MODE_PRIVATE
+        )
 
         // создаем класс-синглтон ретрофит, для запросов
         retrofitClient.Initialize(this)
@@ -43,24 +43,39 @@ class SplashScreen : AppCompatActivity() {
         // получение сохраненного токена обновления
         val refreshToken = sharedPreferences.getString("refresh_token", null)
 
-
         // корутина обновления токена
         lifecycleScope.launch(Dispatchers.IO) {
             // если токен есть то, пытаемся обновить его. в случае успеха, мы убеждаемся, что
             // пользователь авторизован
             if (refreshToken != null) {
                 try {
-                    tokens = lessonAPI.refreshToken(refreshToken)
+                    _user = lessonAPI.refreshToken(refreshToken)
+
+                    Log.i(
+                        "Login", "id: ${_user.id} \n" +
+                                "${_user.fam} \n" +
+                                "${_user.imja} \n" +
+                                "${_user.otch} \n" +
+                                "gr: ${_user.gr} \n" +
+                                "formaob_id: ${_user.formaob_id} \n" +
+                                "inst_id: ${_user.inst_id} \n" +
+                                "kurs: ${_user.kurs} \n" +
+                                "spec_id: ${_user.spec_id} \n" +
+                                "AT: ${_user.access_token} \n" +
+                                "RT: ${_user.refresh_token} \n"
+                    )
+
                     sharedPreferences.edit().apply {
-                        putString("access_token", tokens.access_token)
-                        putString("refresh_token", tokens.refresh_token)
-                        putString("fam", tokens.fam)
-                        putString("imja", tokens.imja)
-                        putString("otch", tokens.otch)
-                        putString("gr", tokens.gr)
-                        putInt("kurs", tokens.kurs)
-                        putInt("inst_id", tokens.inst_id)
-                        putInt("formaob_id", tokens.formaob_id)
+                        putString("access_token", _user.access_token)
+                        putString("refresh_token", _user.refresh_token)
+                        putString("fam", _user.fam)
+                        putString("imja", _user.imja)
+                        putString("otch", _user.otch)
+                        putString("gr", _user.gr)
+                        putInt("kurs", _user.kurs)
+                        putInt("spec_id", _user.spec_id)
+                        putInt("inst_id", _user.inst_id)
+                        putInt("formaob_id", _user.formaob_id)
                         apply()
                     }
                     withContext(Dispatchers.Main) {
@@ -68,15 +83,27 @@ class SplashScreen : AppCompatActivity() {
                     }
                 }
                 // если возникает ошибка обновления токена, значит токен пользователь не авторизован
-                catch (e: Exception) {
+                catch (e: HttpException) {
                     Log.e("Login", "Login is failed due to ${e.message}")
                     withContext(Dispatchers.Main) {
                         sharedPreferences.edit().clear().apply()
                         denyAccess()
                     }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("Login", "Login is failed due to ${e.message}")
+
+                        // Выводим тост о проблеме с соединением
+                        Toast.makeText(applicationContext, "Проблема с соединением", Toast.LENGTH_LONG).show()
+
+                        // Закрываем приложение
+                        finish()
+
+                        // Если хотите завершить работу всего приложения, не только активити:
+                        finishAffinity()
+                    }
                 }
             }
-
             // если токена нет, то вывод на экран авторизации
             else {
                 withContext(Dispatchers.Main) {
@@ -97,7 +124,8 @@ class SplashScreen : AppCompatActivity() {
             val mainIntent = Intent(this@SplashScreen, MainActivity::class.java)
             startActivity(mainIntent)
 
-            // Закрываем активити SplashScreenActivity, чтобы пользователь не мог вернуться к ней по нажатию кнопки "назад"
+            // Закрываем активити SplashScreenActivity, чтобы пользователь не мог вернуться к ней
+            // по нажатию кнопки "назад"
             finish()
 
         }, SPLASH_DELAY)
@@ -113,14 +141,3 @@ class SplashScreen : AppCompatActivity() {
     }
 }
 
-//                val response = lessonAPI.getCurrentUser("Ha-8Yrk6UCvN2e-o0CvhgzG_YlEbEwTa_1725116201")
-//                Log.i("Login", "id: ${response.id}, \n" +
-//                        "FIO: ${response.fam}, " +
-//                        "${response.imja}, " +
-//                        "${response.otch}, \n" +
-//                        "Group: ${response.gr}, \n" +
-//                        "Course: ${response.kurs}, \n" +
-//                        "inst_id: ${response.inst_id}, \n" +
-//                        "formfob: ${response.formaob_id}, \n")
-
-//

@@ -17,4 +17,18 @@
     <color name="HomePract">#FFD555</color>
     <color name="HomeElse">#EB4C42</color>
     <color name="navbar_background_color">#FFFFFF</color>
+    <color name="NewColor_Blue">#007AFF</color>
+    <color name="NewColor_DarkBlue">#1344F3</color>
+    <color name="NewColor_DarkWhite">#f2f2f7</color>
+    <color name="NewColor_DarkGray">#8E8E93</color>
+    <color name="NewColor_PinkLight">#C9D5FF</color>
+    <color name="NewColor_BlueSky">#9AE0FF</color>
+    <color name="NewColor_DarkPurple">#23186E</color>
+    <color name="NewColor_DarkDarkGray">#575760</color>
+    <color name="NewColor_Gray">#BFBFC5</color>
+    <color name="NewColor_Green">#34C759</color>
+    <color name="NewColor_Mint">#00C7BE</color>
+    <color name="NewColor_Orange">#FF9500</color>
+    <color name="NewColor_Red">#FF3B30</color>
+    <color name="NewColor_LightGrey">#DFDFE3</color>
 </resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textSize="16dp"
+                android:fontFamily="@font/sf_pro_display_bold"
+                android:text="ОСЕННИЙ СЕМЕСТР"
+                android:textColor="@color/NewColor_DarkDarkGray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/GradesRecyclerView1"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/SpringSem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:textSize="16dp"
+                android:fontFamily="@font/sf_pro_display_bold"
+                android:text="ВЕСЕННИЙ СЕМЕСТР"
+                android:textColor="@color/NewColor_DarkDarkGray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/GradesRecyclerView2"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+

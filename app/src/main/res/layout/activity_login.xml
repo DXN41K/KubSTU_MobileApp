@@ -43,7 +43,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/blue"/>
+                android:background="@color/NewColor_Blue"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,10 +77,11 @@
 
                     <ImageView
                         android:id="@+id/LogoImg"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
                         android:adjustViewBounds="true"
                         android:alpha="0"
+                        android:layout_margin="10dp"
                         android:src="@drawable/logo1" />
 
                     <TextView
@@ -88,16 +89,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:alpha="0"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="Кубанский государственный\nтехнологический университет"
                         android:textColor="@color/white"
-                        android:textSize="16dp"
+                        android:textSize="13dp"
                         android:textStyle="bold"/>
 
             </LinearLayout>
 
             <Button
+                android:alpha="1"
                 android:id="@+id/BtnOnBoardingAction"
                 android:layout_width="315dp"
                 android:layout_height="70dp"
@@ -121,9 +123,10 @@
     </FrameLayout>
 
     <FrameLayout
+        android:alpha="1"
         android:id="@+id/btmSht2"
         android:layout_width="match_parent"
-        android:layout_height="520dp"
+        android:layout_height="800dp"
         android:layout_marginTop="10dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/rounded2"
@@ -137,105 +140,10 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/stage1"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
                 android:alpha="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textView411"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:letterSpacing="0"
-                    android:lineHeight="27dp"
-                    android:text="Выберите вашу\nакадемическую группу"
-                    android:textColor="@color/black"
-                    android:textSize="24dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView511"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Группа"
-                    android:textColor="@android:color/background_dark"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView411"/>
-
-                <Button
-                    android:id="@+id/ChooseGroupBtn"
-                    android:layout_width="100dp"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/blue"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:letterSpacing="0.01"
-                    android:text="Выбрать"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="14dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView511" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/GroupTB"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/HintStart"
-                    app:boxStrokeColor="@color/blue"
-                    app:boxStrokeWidthFocused="1dp"
-                    app:endIconMode="clear_text"
-                    android:layout_marginEnd="10dp"
-                    android:enabled="false"
-                    app:errorEnabled="true"
-                    app:helperTextTextColor="@color/blue"
-                    app:layout_constraintEnd_toStartOf="@id/ChooseGroupBtn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView511">
-
-                    <EditText
-                        android:id="@+id/GroupTE"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:enabled="false"
-                        android:hint="Нажмите, чтобы выбрать группу"
-                        android:inputType="none"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black" />
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/GroupBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/blue"
-                    android:text="Продолжить"
-                    android:letterSpacing="0.01"
-                    android:textAllCaps="false"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:textSize="20dp"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/GroupTB" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:alpha="0"
                 android:id="@+id/stage2"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="500dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -245,11 +153,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0"
-                    android:enabled="false"
-                    android:lineHeight="27dp"
-                    android:text="Заполните профиль"
+                    android:lineHeight="18dp"
+                    android:text="Авторизуйтесь \nдля продолжения"
                     android:textColor="@color/black"
-                    android:textSize="24dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -259,32 +166,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Фамилия"
+                    android:text="Имя пользователя или E-mail"
+                    android:textSize="14dp"
                     android:fontFamily="@font/montserrat_regular"
-                    android:enabled="false"
                     android:textColor="@android:color/background_dark"
                     app:layout_constraintTop_toBottomOf="@+id/GroupTV"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/SurNameTB"
+                    android:id="@+id/LoginTB"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/HintStart"
                     app:boxStrokeColor="@color/blue"
                     app:boxStrokeWidthFocused="1dp"
+                    app:errorIconDrawable="@null"
                     app:endIconMode="clear_text"
                     app:errorEnabled="true"
-                    android:enabled="false"
                     app:helperTextTextColor="@color/blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/GroupLable">
 
                     <EditText
-                        android:enabled="false"
-                        android:id="@+id/SurNameTE"
+                        android:id="@+id/LoginET"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:inputType="textPersonName"
@@ -297,97 +203,113 @@
                     android:id="@+id/NameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Имя"
+                    android:text="Пароль"
+                    android:textSize="14dp"
                     android:fontFamily="@font/montserrat_regular"
-                    android:enabled="false"
                     android:textColor="@android:color/background_dark"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/SurNameTB" />
+                    app:layout_constraintTop_toBottomOf="@+id/LoginTB" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/NameTB"
+                    android:id="@+id/PasswordTB"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/HintStart"
                     app:boxStrokeColor="@color/blue"
                     app:boxStrokeWidthFocused="1dp"
+                    app:errorIconDrawable="@null"
                     app:errorEnabled="false"
-                    android:enabled="false"
                     app:helperTextTextColor="@color/blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/NameText">
 
                     <EditText
-                        android:id="@+id/NameTE"
+                        android:id="@+id/PasswordET"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:enabled="false"
-                        android:inputType="textPersonName"
+                        android:inputType="textPassword"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@color/black" />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/ResetPassTV"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:errorIconDrawable="@null"
+                    android:autoLink="web"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Забыли пароль?"
+                    android:textColor="@color/blue"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/PasswordTB" />
 
                 <Button
                     android:id="@+id/LogInBtn"
-                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:backgroundTint="@color/blue"
                     android:layout_marginTop="20dp"
-                    android:text="Войти"
+                    android:backgroundTint="@color/NewColor_DarkBlue"
+                    android:fontFamily="@font/cygre_bold"
                     android:letterSpacing="0.01"
+                    android:text="Войти"
                     android:textAllCaps="false"
-                    android:textSize="20dp"
                     android:textColor="@color/white"
+                    android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/NameTB" />
+                    app:layout_constraintTop_toBottomOf="@+id/ResetPassTV" />
 
 
                 <TextView
-                    android:id="@+id/terms_and_conditions_text_view"
+                    android:id="@+id/SignupTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:autoLink="web"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Нажимая кнопку «Войти», вы принимаете условия использования и даете согласие ФГБОУ ВО «КубГТУ» на обработку ваших персональных данных в соотвествии с его политикой"
-                    android:textColor="@color/cyan"
-                    android:textSize="11dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Зарегистрироваться"
+                    android:textColor="@color/blue"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/LogInBtn" />
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/SignupTV">
+
+                    <!--ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/blue_heart" /-->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:gravity="left"
+                        android:text="Для авторизации используйте учетные данные от личного кабинета студента КубГТУ"
+                        android:textSize="10dp" />
+
+                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="20dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/blue_heart"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:text="Разработано Управлением информатизации КубГТУ и студентами кафедры информационных систем и программирования КубГТУ"/>
-
-            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

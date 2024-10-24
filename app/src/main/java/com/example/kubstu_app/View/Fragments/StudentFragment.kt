@@ -1,60 +1,184 @@
 package com.example.kubstu_app.View.Fragments
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.icu.util.LocaleData
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
+import com.example.kubstu_app.Model.dic.SpecsModel
+import com.example.kubstu_app.Model.dic.SpecsResponse
+import com.example.kubstu_app.Model.student.Semester
 import com.example.kubstu_app.R
+import com.example.kubstu_app.ViewModel.Adapters.GradesViewPagerWithRecyclerAdapter
+import com.example.kubstu_app.ViewModel.Retrofit.IAPI
+import com.example.kubstu_app.ViewModel.Retrofit.retrofitClient
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import java.time.LocalDate
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [StudentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StudentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    private lateinit var sharedPreferences: SharedPreferences
+
+    lateinit var list: Map<String, Semester>
+    lateinit var Splittedlist: List<Map<String, Semester>>
+    lateinit var specific: SpecsResponse
+    lateinit var specific_text: SpecsModel
+    lateinit var retro: Retrofit
+    lateinit var lessonAPI: IAPI
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_student, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StudentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StudentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        sharedPreferences =
+            requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
+
+        val access_token = sharedPreferences.getString("access_token", null)
+
+        retrofitClient.Initialize(requireContext())
+        retro = retrofitClient.getClient()
+        lessonAPI = retro.create(IAPI::class.java)
+
+        val spec_id = sharedPreferences.getInt("spec_id", 0)
+        val kurs = sharedPreferences.getInt("kurs", 0)
+        val spec = view.findViewById<TextView>(R.id.StudentCard_Specific)
+        val name = sharedPreferences.getString("imja", null)
+        val Surname = sharedPreferences.getString("fam", null)
+        val otch = sharedPreferences.getString("otch", null)
+
+        val viewPager = view.findViewById<ViewPager2>(R.id.GradesVP)
+        val tabLayout = view.findViewById<TabLayout>(R.id.GradesTabLayout)
+        val titles: MutableList<String> = mutableListOf()
+
+
+        val nameView = view.findViewById<TextView>(R.id.StudentCard_Name)
+        nameView.text = "$Surname\n$name $otch"
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (access_token != null) {
+                try {
+                    list = lessonAPI.getGrades(access_token)
+                    specific = lessonAPI.getSpecs()
+                    specific_text = specific.data.first { it.id == spec_id }
+
+
+                    var count = 0
+                    var sum = 0
+
+                    if (!list.isNullOrEmpty()) {
+                        for ((_, item) in list) {
+                            if (!item.e.isNullOrEmpty()) {
+                                for (i in item.e) {
+                                    if (i.oc_f != 0 && i.oc_f != 8) {
+                                        sum += i.oc_f
+                                        count++
+                                    }
+                                }
+                            }
+                            if (!item.z.isNullOrEmpty()) {
+                                for (i in item.z) {
+                                    if (i.tipkontr_id != 2 && (i.oc_f != 0 && i.oc_f != 8)) {
+                                        sum += i.oc_f
+                                        count++
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Splittedlist = splitMapIntoPairs(list)
+
+                    var x = Splittedlist.size
+
+                    if (LocalDate.now().monthValue >= 9) {
+
+                        if (x == 0) {
+                            titles.add("${LocalDate.now().year}/${LocalDate.now().year + 1} уч. год")
+                        }
+
+                        while (x > 0) {
+                            titles.add("${LocalDate.now().year - x + 1}/${LocalDate.now().year - x + 2} уч. год")
+                            x--
+                        }
+                    }
+                    else {
+                        if (x == 0) {
+                            titles.add("${LocalDate.now().year - 1}/${LocalDate.now().year} уч. год")
+                        }
+
+                        while (x > 0) {
+                            titles.add("${LocalDate.now().year - x}/${LocalDate.now().year - x + 1} уч. год")
+                            x--
+                        }
+                    }
+
+                    var mid = sum.toDouble() / count.toDouble()
+                    val roundedResult = String.format(Locale.US, "%.1f", mid)
+
+                    withContext(Dispatchers.Main) {
+                        spec.text = "$kurs курс\n${specific_text.code} ${specific_text.name}"
+                        val midTxt = view.findViewById<TextView>(R.id.StudentMidGradeTXT)
+                        if (!list.isNullOrEmpty()) {
+                            midTxt.text = roundedResult.toString()
+                        }
+                        val adapter = GradesViewPagerWithRecyclerAdapter(Splittedlist)
+                        viewPager.adapter = adapter
+                        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                            tab.text = titles[position] // Установка названия таба
+                        }.attach()
+                    }
+                }
+                // если возникает ошибка обновления токена, значит токен пользователь не авторизован
+                catch (e: Exception) {
+                    Log.e("Login", "Login is failed due to ${e.message}")
+                }
+                if (isAdded) {
+                    requireActivity().runOnUiThread {
+                    }
                 }
             }
+        }
+
+        return view
+    }
+
+    fun splitMapIntoPairs(map: Map<String, Semester>): List<Map<String, Semester>> {
+        val result = mutableListOf<Map<String, Semester>>()
+        var tempMap = mutableMapOf<String, Semester>()
+
+        if (map.isNullOrEmpty()) return emptyList()
+
+        for ((key, value) in map) {
+            tempMap[key] = value
+
+            if (tempMap.size == 2) {
+                result.add(tempMap.toMap())
+                tempMap = mutableMapOf()
+            }
+        }
+
+        if (tempMap.isNotEmpty()) {
+            result.add(tempMap.toMap())
+        }
+
+        return result
     }
 }

@@ -5,125 +5,134 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="110dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="3dp"
-    android:layout_margin="8dp">
+    app:cardElevation="0dp"
+    app:cardCornerRadius="0dp"
+    android:layout_marginVertical="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="@color/white">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/LessonCardCornerColor"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue"/>
+        android:background="@color/NewColor_DarkWhite">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/LessonType"
-                android:layout_width="140dp"
+                android:id="@+id/LessonsTime"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Лекция"
+                android:fontFamily="@font/cygre_light"
+                android:text="8:00 – 9:30"
+                android:layout_marginEnd="14dp"
+                android:textColor="@color/black"
                 android:textSize="12dp"
-                android:fontFamily="@font/cygre_semibold"
-                android:layout_margin="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cardView5"
+                app:layout_constraintVertical_bias="0.26999998" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
+                app:layout_constraintTop_toTopOf="@+id/cardView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/NewColor_DarkBlue">
+
+                    <TextView
+                        android:id="@+id/LessonType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginBottom="3dp"
+                        android:fontFamily="@font/cygre_regular"
+                        android:text="лекция"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/LessonType"
-                app:layout_constraintEnd_toStartOf="@+id/cardView5"
-                app:layout_constraintTop_toTopOf="@+id/LessonType">
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="-5dp"
+                app:cardCornerRadius="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#00F0FF">
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:background="@color/NewColor_PinkLight">
 
                     <TextView
                         android:id="@+id/LessonsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="2dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="1 пара"
-                        android:fontFamily="@font/cygre_semibold"
+                        android:layout_marginBottom="3dp"
+                        android:fontFamily="@font/cygre_regular"
+                        android:text="2"
                         android:textColor="@color/black"
                         android:textSize="12dp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:cardElevation="0dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="#47EDBB">
-
-                            <TextView
-                                android:id="@+id/LessonsTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="10dp"
-                                android:layout_marginVertical="2dp"
-                                android:fontFamily="@font/cygre_semibold"
-                                android:text="8:00 – 9:30"
-                                android:textColor="@color/black"
-                                android:textSize="12dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="10dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/LessonType"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/LessonType">
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintStart_toEndOf="@+id/cardView6"
+                app:layout_constraintTop_toTopOf="@+id/cardView">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#00FF75">
+
+                    android:background="@color/NewColor_BlueSky">
 
                     <TextView
                         android:id="@+id/audience"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginVertical="2dp"
-                        android:fontFamily="@font/cygre_semibold"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginBottom="3dp"
+                        android:fontFamily="@font/cygre_regular"
                         android:text="К-234"
                         android:textColor="@color/black"
                         android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -132,6 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/montserrat_regular"
+                android:textStyle="bold"
                 android:layout_marginEnd="8dp"
                 android:text="Современные проблемы искусственного интеллекта"
                 android:textSize="16dp"
@@ -148,22 +158,9 @@
                 android:layout_marginBottom="8dp"
                 android:textSize="12dp"
                 android:text="Иванов Иван Иванович"
-                android:fontFamily="@font/cygre_semibold"
+                android:fontFamily="@font/cygre_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/LessonStarts"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:gravity="right"
-                android:text="начало через 14 часов 10 минут"
-                android:textSize="12dp"
-                android:fontFamily="@font/cygre_regular"
-                app:layout_constraintBottom_toBottomOf="@+id/LessonTeacher"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/LessonTeacher" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

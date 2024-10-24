@@ -8,5 +8,6 @@ data class UserResponse(
     val gr: String,
     val kurs: Int,
     val inst_id: Int,
-    val formaob_id: Int
+    val formaob_id: Int,
+    val spec_id: Int
 )

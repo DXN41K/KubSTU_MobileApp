@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 
 
 data class LessonsDomain(
-    val type: String,
+    var type: String,
     var audience: String,
     val name: String,
     val teacher: String,
@@ -37,6 +37,9 @@ data class LessonsDomain(
         if (audience == "Ф-Спортивный комплекс") {
             audience = "Ф"
         }
+
+        type = type.lowercase()
+
         time = pairMap[pair] ?: ElsePair
 
 
