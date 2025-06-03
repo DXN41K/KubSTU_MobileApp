@@ -9,8 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.LessonModel
-import com.example.kubstu_app.Model.LessonsDomain
+import com.example.kubstu_app.data.model.LessonModel
+import com.example.kubstu_app.presentation.viewstate.LessonViewState
 import com.example.kubstu_app.R
 
 class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLessonsAdapter.LessonsViewHolder>(Comparator()) {
@@ -31,7 +31,7 @@ class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLe
         val hasLeft: TextView = itemView.findViewById(R.id.LessonStarts)
         val altTime: TextView = itemView.findViewById(R.id.LessonsCount)
         val colorCard: ConstraintLayout = itemView.findViewById(R.id.LessonCardCornerColor)
-        fun bind(data: LessonsDomain) {
+        fun bind(data: LessonViewState) {
             typeTV.text = data.type
             timeTV.text = data.GetThisTime()
             audienceTV.text = data.audience
@@ -54,8 +54,8 @@ class HomeLessonsAdapter(val context: Context) : ListAdapter<LessonModel, HomeLe
         holder.bind(data)
     }
 
-    private fun ConvertToVM(Smth: LessonModel): LessonsDomain {
-        return LessonsDomain(
+    private fun ConvertToVM(Smth: LessonModel): LessonViewState {
+        return LessonViewState(
             Smth.kindofnagr.kindofnagr_name,
             Smth.classroom,
             Smth.disc.disc_name,

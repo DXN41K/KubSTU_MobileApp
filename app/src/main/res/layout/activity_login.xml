@@ -6,7 +6,7 @@
     android:id="@+id/rooty"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.LogInActivity">
+    tools:context=".presentation.activity.LogInActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -72,29 +72,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/LayoutOnBoardingIndicator">
-
-
-
+                
                     <ImageView
                         android:id="@+id/LogoImg"
-                        android:layout_width="90dp"
+                        android:layout_width="300dp"
                         android:layout_height="90dp"
                         android:adjustViewBounds="true"
                         android:alpha="0"
                         android:layout_margin="10dp"
-                        android:src="@drawable/logo1" />
-
-                    <TextView
-                        android:id="@+id/LogoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0"
-                        android:gravity="left"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="Кубанский государственный\nтехнологический университет"
-                        android:textColor="@color/white"
-                        android:textSize="13dp"
-                        android:textStyle="bold"/>
+                        android:src="@drawable/newlogo_white" />
 
             </LinearLayout>
 

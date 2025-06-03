@@ -6,13 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.student.Exam
-import com.example.kubstu_app.Model.student.Semester
-import com.example.kubstu_app.Model.student.Zachet
+import com.example.kubstu_app.data.model.ExamModel
+import com.example.kubstu_app.data.model.SemesterModel
+import com.example.kubstu_app.data.model.ZachetModel
 import com.example.kubstu_app.R
 
-class GradesRecyclerAdapter(private val items: Semester) :
+class GradesRecyclerAdapter(private val items: SemesterModel) :
     RecyclerView.Adapter<GradesRecyclerAdapter.ItemViewHolder>() {
+
+    val tips_kontr = listOf(2, 3, 4, 9, 10, 11, 12)
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.GradesName)
@@ -28,6 +30,14 @@ class GradesRecyclerAdapter(private val items: Semester) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         var grades = (items?.e ?: emptyList()) + (items?.z ?: emptyList())
+        val filteredGrades = grades.filter { item ->
+            when (item) {
+                is ExamModel -> true // Exams не имеют поля tipkontr_id, оставляем как есть
+                is ZachetModel -> tips_kontr.contains(item.tipkontr_id)
+                else -> false // Если это какой-то другой тип, убираем его
+            }
+        }
+
         val context = holder.itemView.context
 
         var title = ""
@@ -35,10 +45,10 @@ class GradesRecyclerAdapter(private val items: Semester) :
         var color = 0
         var grade = ""
 
-        val currItem = grades[position]
+        val currItem = filteredGrades[position]
         when (currItem) {
-            is Exam -> {
-                title = currItem.disc_name
+            is ExamModel -> {
+                title = currItem.disc_name.trim()
                 type = "Экзамен"
                 grade = when (currItem.oc_f) {
                     8 -> "-"
@@ -52,8 +62,8 @@ class GradesRecyclerAdapter(private val items: Semester) :
                     else -> ContextCompat.getColor(context, R.color.NewColor_Red)
                 }
             }
-            is Zachet -> {
-                title = currItem.disc_name.replace(Regex("^\\S+\\s+\\d*\\s*"), "")
+            is ZachetModel -> {
+                title = currItem.disc_name.trim().replace(Regex("^\\S+\\s+\\d*\\s*"), "")
                 type = when (currItem.tipkontr_id) {
                     2 -> "Зачет"
                     3 -> "Курсовой проект"
@@ -89,6 +99,15 @@ class GradesRecyclerAdapter(private val items: Semester) :
     }
 
     override fun getItemCount(): Int {
-        return (items?.e?.size ?: 0) + (items?.z?.size ?: 0)
+        var grades = (items?.e ?: emptyList()) + (items?.z ?: emptyList())
+        val filteredGrades = grades.filter { item ->
+            when (item) {
+                is ExamModel -> true // Exams не имеют поля tipkontr_id, оставляем как есть
+                is ZachetModel -> tips_kontr.contains(item.tipkontr_id)
+                else -> false // Если это какой-то другой тип, убираем его
+            }
+        }
+        return filteredGrades.size
+
     }
 }

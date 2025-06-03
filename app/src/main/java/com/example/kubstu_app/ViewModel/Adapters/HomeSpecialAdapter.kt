@@ -1,6 +1,8 @@
 package com.example.kubstu_app.ViewModel.Adapters
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.kubstu_app.Model.SpecialDomain
+import com.example.kubstu_app.presentation.viewstate.SvcCardViewState
 import com.example.kubstu_app.R
 
-class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context: Context) : Adapter<ViewHolder>() {
+class HomeSpecialAdapter(private val specials: List<SvcCardViewState>, val context: Context) : Adapter<ViewHolder>() {
     companion object {
         private const val TYPE_WITH_IMAGE = 1
         private const val TYPE_WITHOUT_IMAGE = 0
@@ -22,7 +24,7 @@ class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context:
         private val titleTextView: TextView = itemView.findViewById(R.id.SpecialNoImgTitle)
         //private val descriptionTextView: TextView = itemView.findViewById(R.id.SpecialNoImgSubtitle)
         private val backGround: ImageView = itemView.findViewById(R.id.BackgroundNoImageView)
-        fun bind(data: SpecialDomain) {
+        fun bind(data: SvcCardViewState) {
             backGround.setImageResource(data.Background)
             titleTextView.text = data.Title
 //            descriptionTextView.text = data.SubTitle
@@ -33,11 +35,19 @@ class HomeSpecialAdapter(private val specials: List<SpecialDomain>, val context:
         private val descriptionTextView: TextView = itemView.findViewById(R.id.SpecialImgSubtitle)
         private val backGround: ImageView = itemView.findViewById(R.id.BackgroundImageView)
         private val image: ImageView = itemView.findViewById(R.id.SpecialImage)
-        fun bind(data: SpecialDomain) {
+        fun bind(data: SvcCardViewState) {
             backGround.setImageResource(data.Background)
             titleTextView.text = data.Title
             descriptionTextView.text = data.SubTitle
             image.setImageDrawable(ContextCompat.getDrawable(context, data.Image!!))
+
+            // Устанавливаем обработчик клика
+            itemView.setOnClickListener {
+                data.Url?.let { url ->
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    context.startActivity(intent)
+                }
+            }
         }
     }
 

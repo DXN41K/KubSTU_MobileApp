@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.LessonModel
-import com.example.kubstu_app.Model.LessonsDomain
+import com.example.kubstu_app.data.model.LessonModel
+import com.example.kubstu_app.presentation.viewstate.LessonViewState
 import com.example.kubstu_app.R
 
 class ScheduleLessonsAdapter(val context: Context) :
@@ -29,7 +29,7 @@ class ScheduleLessonsAdapter(val context: Context) :
         val nameTV: TextView = itemView.findViewById(R.id.LessonName)
         val teacher: TextView = itemView.findViewById(R.id.LessonTeacher)
         val altTime: TextView = itemView.findViewById(R.id.LessonsCount)
-        fun bind(data: LessonsDomain) {
+        fun bind(data: LessonViewState) {
             typeTV.text = data.type
             timeTV.text = data.GetThisTime()
             audienceTV.text = data.audience
@@ -73,8 +73,8 @@ class ScheduleLessonsAdapter(val context: Context) :
         const val TYPE_EMPTY = 0
     }
 
-    private fun ConvertToVM(Smth: LessonModel): LessonsDomain {
-        return LessonsDomain(
+    private fun ConvertToVM(Smth: LessonModel): LessonViewState {
+        return LessonViewState(
             Smth.kindofnagr.kindofnagr_name,
             Smth.classroom,
             Smth.disc.disc_name,

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.timeTable.GroupModel
+import com.example.kubstu_app.data.model.GroupModel
 import com.example.kubstu_app.R
 
 class GroupAdapter(val context: Context, val listener: Listener) : ListAdapter<GroupModel, GroupAdapter.GroupViewHolder>(Comparator()) {

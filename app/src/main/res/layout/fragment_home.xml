@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/NewColor_DarkWhite"
-    tools:context=".View.Fragments.HomeFragment">
+    tools:context=".presentation.fragments.HomeFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,10 +34,9 @@
                         android:layout_height="32dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="5dp"
-                        android:src="@drawable/logo1"
+                        android:src="@drawable/kplogo1"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="@color/NewColor_DarkBlue" />
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
                         android:id="@+id/GoodDayText"
@@ -70,6 +69,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -300,6 +300,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

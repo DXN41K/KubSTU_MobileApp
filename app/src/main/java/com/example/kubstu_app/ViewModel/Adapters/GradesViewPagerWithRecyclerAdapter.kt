@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kubstu_app.Model.student.Semester
+import com.example.kubstu_app.data.model.SemesterModel
 import com.example.kubstu_app.R
 
-class GradesViewPagerWithRecyclerAdapter(private val pagesData: List<Map<String, Semester>>) :
+class GradesViewPagerWithRecyclerAdapter(private val pagesData: List<Map<String, SemesterModel>>) :
     RecyclerView.Adapter<GradesViewPagerWithRecyclerAdapter.PageViewHolder>() {
 
     inner class PageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
