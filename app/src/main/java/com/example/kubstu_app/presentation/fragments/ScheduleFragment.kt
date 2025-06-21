@@ -1,7 +1,9 @@
 package com.example.kubstu_app.presentation.fragments
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +14,8 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +25,7 @@ import com.example.kubstu_app.data.remote.response.LessonResponse
 import com.example.kubstu_app.R
 import com.example.kubstu_app.ViewModel.Adapters.ScheduleLessonsAdapter
 import com.example.kubstu_app.data.remote.retrofit.RetrofitClient
+import com.example.kubstu_app.presentation.activity.ChooseGroupActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -73,6 +78,7 @@ class ScheduleFragment : Fragment() {
     )
 
     private lateinit var selectedGroup: String
+    private lateinit var chooseGroupActivityResultLauncher: ActivityResultLauncher<Intent>
 
     var list: LessonResponse? = null
     lateinit var retro: Retrofit
@@ -93,6 +99,40 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         view = inflater.inflate(R.layout.fragment_schedule, container, false)
+
+        chooseGroupActivityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            // Этот блок выполняется, когда ChooseGroupActivity завершается и возвращает результат
+            if (result.resultCode == Activity.RESULT_OK) { // Используем Activity.RESULT_OK, так как ActivityResultContracts требует его
+                val data: Intent? = result.data
+                val selectedGroupName = data?.getStringExtra("result")
+                selectedGroupName?.let {
+                    // Здесь у вас есть выбранное имя группы!
+                    // Вы можете обновить TextView во фрагменте, сохранить его и т.д.
+                    // Например, если у вас есть TextView с ID groupNameDisplayTextView:
+                    // val groupNameDisplayTextView: TextView = view.findViewById(R.id.groupNameDisplayTextView)
+                    // groupNameDisplayTextView.text = "Выбрана группа: $it"
+                    println("Выбрана группа: $it")
+                }
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                // Обработка случая, если ChooseGroupActivity была отменена (например, пользователь нажал "Назад")
+                println("Выбор группы отменен.")
+            }
+        }
+
+        // Находим вашу кнопку по ID (предполагается, что она есть в R.layout.fragment_schedule)
+        val selectGroupButton: Button = view.findViewById(R.id.Select_Group_Schedule_Btn)
+
+        // Устанавливаем слушатель нажатий для вашей кнопки
+        selectGroupButton.setOnClickListener {
+            // Создаем Intent для открытия ChooseGroupActivity
+            val intent = Intent(requireContext(), ChooseGroupActivity::class.java) // Используем requireContext()
+            // Запускаем активити и ожидаем результат
+            chooseGroupActivityResultLauncher.launch(intent)
+        }
+
+
 
         sharedPreferences =
             requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)

@@ -144,6 +144,32 @@ interface AppDao {
     @Query("SELECT * FROM disc ORDER BY disc_name ASC")
     suspend fun getAllDiscs(): List<DiscEntity>
 
+    // Сохранить все виды нагрузки
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllKindOfNagr(list: List<KindOfNagrEntity>)
 
+    // Получить весь список видов нагрузки
+    @Query("SELECT * FROM kindofnagr ORDER BY kindofnagr_name ASC")
+    suspend fun getAllKindOfNagr(): List<KindOfNagrEntity>
+
+    // Получить один вид нагрузки по ID
+    @Query("SELECT * FROM kindofnagr WHERE id = :id LIMIT 1")
+    suspend fun getKindOfNagrById(id: Int): KindOfNagrEntity?
+
+    // Сохранить все занятия/пары
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllLessons(list: List<LessonEntity>)
+
+    // Получить весь список занятий/пар
+    @Query("SELECT * FROM lessons")
+    suspend fun getAllLessons(): List<LessonEntity>
+
+    // Получить занятия по определенной дате
+    @Query("SELECT * FROM lessons WHERE date = :date ORDER BY pair ASC")
+    suspend fun getLessonsByDate(date: String): List<LessonEntity>
+
+    // Получить занятия по преподавателю
+    @Query("SELECT * FROM lessons WHERE teacher = :teacher ORDER BY date ASC, pair ASC")
+    suspend fun getLessonsByTeacher(teacher: String): List<LessonEntity>
 
 }

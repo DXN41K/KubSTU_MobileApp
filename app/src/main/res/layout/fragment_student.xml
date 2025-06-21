@@ -92,7 +92,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/sf_pro_display_bold"
                                 android:text="Иванов\nИван Натанович"
-                                android:textSize="20dp" />
+                                android:textSize="22dp" />
 
                             <TextView
                                 android:id="@+id/StudentCard_Specific"
@@ -101,7 +101,7 @@
                                 android:fontFamily="@font/sf_pro_display_regular"
                                 android:text="-"
                                 android:textColor="@color/NewColor_DarkDarkGray"
-                                android:textSize="12dp" />
+                                android:textSize="16dp" />
 
                         </LinearLayout>
 
@@ -129,7 +129,7 @@
                             android:layout_margin="16dp"
                             android:fontFamily="@font/sf_pro_display_regular"
                             android:text="Средний балл"
-                            android:textSize="14dp"
+                            android:textSize="16dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

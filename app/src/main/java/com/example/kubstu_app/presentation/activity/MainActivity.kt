@@ -22,11 +22,12 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(HomeFragment())
+//        replaceFragment(HomeFragment())
+        replaceFragment(ScheduleFragment())
 
         binding.bottomNavigationView.setOnItemSelectedListener() {
             when(it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
+//                R.id.home -> replaceFragment(HomeFragment())
                 R.id.schedule -> replaceFragment(ScheduleFragment())
                 R.id.grades -> replaceFragment(StudentFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())

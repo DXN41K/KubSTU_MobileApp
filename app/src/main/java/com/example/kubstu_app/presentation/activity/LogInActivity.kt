@@ -25,6 +25,9 @@ import com.example.kubstu_app.ViewModel.Adapters.OnBoardingAdapter
 import com.example.kubstu_app.presentation.viewstate.OnBoardingViewState
 import com.example.kubstu_app.data.remote.response.LoginResponse
 import com.example.kubstu_app.R
+import com.example.kubstu_app.data.model.SemesterModel
+import com.example.kubstu_app.data.model.SpecsModel
+import com.example.kubstu_app.data.remote.response.SpecsResponse
 import com.example.kubstu_app.data.remote.retrofit.IAPI
 import com.example.kubstu_app.data.remote.retrofit.RetrofitClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -32,11 +35,16 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import kotlin.properties.Delegates
 
 class LogInActivity : AppCompatActivity() {
+    //статические поля
+    companion object{
+        val dip = 40f
+        var px by Delegates.notNull<Float>()
+    }
 
-    //добавление позже инициализируемых переменных
     private lateinit var onBoardingAdapter: OnBoardingAdapter
     private lateinit var layoutOnBoardingIndicators: LinearLayout
     private lateinit var LogInBtn: Button
@@ -47,53 +55,29 @@ class LogInActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    //статические поля
-    companion object{
-        val dip = 40f
-        var px by Delegates.notNull<Float>()
-        val REQUEST_CODE = 8
-    }
+    lateinit var list: Map<String, SemesterModel>
+    lateinit var specific: SpecsResponse
+    lateinit var specific_text: SpecsModel
+    val tips_kontr = listOf(2,3,4,9,10,11,12)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val SignUpLink = findViewById<TextView>(R.id.SignupTV)
-        val url1 = "https://student.kubstu.ru/site/signup-search-student"
-        SignUpLink.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url1)
-            startActivity(intent)
-        }
-
-        val ResetPassLink = findViewById<TextView>(R.id.ResetPassTV)
-        val url2 = "https://student.kubstu.ru/site/reset-password-request"
-        ResetPassLink.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url2)
-            startActivity(intent)
-        }
-
-        RetrofitClient.Initialize(this)
         val api = RetrofitClient.getClient()
         val lessonAPI = api.create(IAPI::class.java)
 
         sharedPreferences = getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
 
-        //Инициализация переменных
         stage2 = findViewById(R.id.stage2)
         LoginET = findViewById(R.id.LoginET)
         PasswordET = findViewById(R.id.PasswordET)
 
-        //добавление слушателей на кнопки
         LogInBtn = findViewById(R.id.LogInBtn)
-
         LogInBtn.setOnClickListener {
 
-            //добавить прочтение Login и Password
             val textIL = findViewById<TextInputLayout>(R.id.LoginTB)
             val textIL2 = findViewById<TextInputLayout>(R.id.PasswordTB)
-
             textIL.error = null
             textIL2.error = null
 
@@ -112,7 +96,53 @@ class LogInActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
 
                 try {
+                    Log.i("jojo", "1")
+
                     _user = lessonAPI.login(login, password)
+
+                    Log.i("jojo", "2")
+
+                    list = lessonAPI.getGrades(_user.access_token)
+                    specific = lessonAPI.getSpecs()
+                    specific_text = specific.data!!.first { it.id == (_user.spec_id ?: 0) }
+
+
+                    var count = 0
+                    var sum = 0
+
+
+                    if (!list.isNullOrEmpty()) {
+                        for ((_, item) in list) {
+                            if (!item.e.isNullOrEmpty()) {
+                                for (i in item.e) {
+                                    if (!tips_kontr.contains(i.tipkontr_id)) continue
+                                    if (i.oc_f != 0 && i.oc_f != 8) {
+                                        sum += i.oc_f
+                                        count++
+                                    }
+                                }
+                            }
+                            if (!item.z.isNullOrEmpty()) {
+                                for (i in item.z) {
+                                    if (!tips_kontr.contains(i.tipkontr_id)) continue
+                                    if (i.tipkontr_id != 2 && (i.oc_f != 0 && i.oc_f != 8)) {
+                                        sum += i.oc_f
+                                        count++
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    var roundedResult = "-"
+                    if (count > 0) {
+                        var mid = sum.toDouble() / count.toDouble()
+                        roundedResult = String.format(Locale.US, "%.1f", mid)
+                    }
+
+                    Log.i("jojo", "3")
+
+
                     Log.i(
                         "Login", "id: ${_user.id} \n" +
                                 "${_user.fam} \n" +
@@ -122,8 +152,12 @@ class LogInActivity : AppCompatActivity() {
                                 "formaob_id: ${_user.formaob_id} \n" +
                                 "inst_id: ${_user.inst_id} \n" +
                                 "kurs: ${_user.kurs} \n" +
+                                "spec_id: ${_user.spec_id} \n" +
                                 "AT: ${_user.access_token} \n" +
-                                "RT: ${_user.refresh_token} \n"
+                                "RT: ${_user.refresh_token} \n" +
+                                "average_grade: ${_user.refresh_token} \n" +
+                                "specific_name: ${_user.refresh_token} \n" +
+                                "specific_code: ${_user.refresh_token} \n"
                     )
                     sharedPreferences.edit().apply {
                         putString("access_token", _user.access_token)
@@ -136,6 +170,9 @@ class LogInActivity : AppCompatActivity() {
                         putInt("spec_id", _user.spec_id)
                         putInt("inst_id", _user.inst_id)
                         putInt("formaob_id", _user.formaob_id)
+                        putString("average_grade", roundedResult)
+                        putString("specific_code", specific_text.code)
+                        putString("specific_name", specific_text.name)
                         apply()
                     }
 
@@ -150,10 +187,26 @@ class LogInActivity : AppCompatActivity() {
                         textIL2.error = "Не удалось войти. Попробуйте позже."
                     }
                 }
-
-
             }
         }
+
+        // Установка ссылок
+        val SignUpLink = findViewById<TextView>(R.id.SignupTV)
+        val url1 = "https://student.kubstu.ru/site/signup-search-student"
+        SignUpLink.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url1)
+            startActivity(intent)
+        }
+
+        val ResetPassLink = findViewById<TextView>(R.id.ResetPassTV)
+        val url2 = "https://student.kubstu.ru/site/reset-password-request"
+        ResetPassLink.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url2)
+            startActivity(intent)
+        }
+
 
             //рассчет пропорций расположения элементов
             val displayMetrics = resources.displayMetrics

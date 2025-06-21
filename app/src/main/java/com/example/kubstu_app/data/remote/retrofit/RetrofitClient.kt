@@ -14,9 +14,12 @@ import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
 
+    private const val BASE_URL = "https://elkaf.kubstu.ru/api/"
+
     private lateinit var http: HttpLoggingInterceptor
     private lateinit var clientBuilder: OkHttpClient.Builder
     private lateinit var okHttpClient: OkHttpClient
+
     fun Initialize(context: Context)
     {
         http = HttpLoggingInterceptor()
@@ -49,10 +52,9 @@ object RetrofitClient {
             }
         }
 
-
         okHttpClient = clientBuilder.addInterceptor(http).build()
     }
-    private const val BASE_URL = "https://elkaf.kubstu.ru/api/"
+
 
     fun getClient(): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)

@@ -54,16 +54,22 @@ class StudentFragment : Fragment() {
 
         val access_token = sharedPreferences.getString("access_token", null)
 
-        RetrofitClient.Initialize(requireContext())
         retro = RetrofitClient.getClient()
         lessonAPI = retro.create(IAPI::class.java)
 
-        val spec_id = sharedPreferences.getInt("spec_id", 0)
+        val roundedResult = sharedPreferences.getString("average_grade", "-")
+        val specific_code = sharedPreferences.getString("specific_code", "-")
+        val specific_name = sharedPreferences.getString("specific_name", "-")
         val kurs = sharedPreferences.getInt("kurs", 0)
         val spec = view.findViewById<TextView>(R.id.StudentCard_Specific)
         val name = sharedPreferences.getString("imja", null)
         val Surname = sharedPreferences.getString("fam", null)
         val otch = sharedPreferences.getString("otch", null)
+
+        spec.text = "$kurs курс\n${specific_code} ${specific_name}"
+        val midTxt = view.findViewById<TextView>(R.id.StudentMidGradeTXT)
+        midTxt.text = roundedResult.toString()
+
 
         val viewPager = view.findViewById<ViewPager2>(R.id.GradesVP)
         val tabLayout = view.findViewById<TabLayout>(R.id.GradesTabLayout)
@@ -77,34 +83,7 @@ class StudentFragment : Fragment() {
             if (access_token != null) {
                 try {
                     list = lessonAPI.getGrades(access_token)
-                    specific = lessonAPI.getSpecs()
-                    specific_text = specific.data!!.first { it.id == spec_id }
 
-                    var count = 0
-                    var sum = 0
-
-                    if (!list.isNullOrEmpty()) {
-                        for ((_, item) in list) {
-                            if (!item.e.isNullOrEmpty()) {
-                                for (i in item.e) {
-                                    if (!tips_kontr.contains(i.tipkontr_id)) continue
-                                    if (i.oc_f != 0 && i.oc_f != 8) {
-                                        sum += i.oc_f
-                                        count++
-                                    }
-                                }
-                            }
-                            if (!item.z.isNullOrEmpty()) {
-                                for (i in item.z) {
-                                    if (!tips_kontr.contains(i.tipkontr_id)) continue
-                                    if (i.tipkontr_id != 2 && (i.oc_f != 0 && i.oc_f != 8)) {
-                                        sum += i.oc_f
-                                        count++
-                                    }
-                                }
-                            }
-                        }
-                    }
 
                     Splittedlist = splitMapIntoPairs(list)
 
@@ -132,15 +111,9 @@ class StudentFragment : Fragment() {
                         }
                     }
 
-                    var mid = sum.toDouble() / count.toDouble()
-                    val roundedResult = String.format(Locale.US, "%.1f", mid)
 
                     withContext(Dispatchers.Main) {
-                        spec.text = "$kurs курс\n${specific_text.code} ${specific_text.name}"
-                        val midTxt = view.findViewById<TextView>(R.id.StudentMidGradeTXT)
-                        if (!list.isNullOrEmpty()) {
-                            midTxt.text = roundedResult.toString()
-                        }
+
                         val adapter = GradesViewPagerWithRecyclerAdapter(Splittedlist)
                         viewPager.adapter = adapter
                         TabLayoutMediator(tabLayout, viewPager) { tab, position ->

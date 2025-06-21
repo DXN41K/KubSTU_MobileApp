@@ -7,14 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".presentation.activity.ChooseGroupActivity">
 
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Поиск..."
+        android:padding="12dp"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        android:inputType="textCapWords"
+        android:background="@color/white"
+        android:textSize="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginVertical="32dp"
         android:id="@+id/GroupRV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText" /> </androidx.constraintlayout.widget.ConstraintLayout>
