@@ -79,6 +79,8 @@ class ScheduleFragment : Fragment() {
 
     private lateinit var selectedGroup: String
     private lateinit var chooseGroupActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var GroupText: TextView
+
 
     var list: LessonResponse? = null
     lateinit var retro: Retrofit
@@ -88,7 +90,6 @@ class ScheduleFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        RetrofitClient.Initialize(context)
         retro = RetrofitClient.getClient()
         lessonAPI = retro.create(IAPI::class.java)
     }
@@ -100,44 +101,35 @@ class ScheduleFragment : Fragment() {
     ): View {
         view = inflater.inflate(R.layout.fragment_schedule, container, false)
 
+        GroupText = view.findViewById(R.id.TextViewSchedule)
+
         chooseGroupActivityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            // Этот блок выполняется, когда ChooseGroupActivity завершается и возвращает результат
-            if (result.resultCode == Activity.RESULT_OK) { // Используем Activity.RESULT_OK, так как ActivityResultContracts требует его
+            if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 val selectedGroupName = data?.getStringExtra("result")
                 selectedGroupName?.let {
-                    // Здесь у вас есть выбранное имя группы!
-                    // Вы можете обновить TextView во фрагменте, сохранить его и т.д.
-                    // Например, если у вас есть TextView с ID groupNameDisplayTextView:
-                    // val groupNameDisplayTextView: TextView = view.findViewById(R.id.groupNameDisplayTextView)
-                    // groupNameDisplayTextView.text = "Выбрана группа: $it"
+                    selectedGroup = it
+                    loadSched()
+                    GroupText.text = it
                     println("Выбрана группа: $it")
                 }
             } else if (result.resultCode == Activity.RESULT_CANCELED) {
-                // Обработка случая, если ChooseGroupActivity была отменена (например, пользователь нажал "Назад")
                 println("Выбор группы отменен.")
             }
         }
 
-        // Находим вашу кнопку по ID (предполагается, что она есть в R.layout.fragment_schedule)
         val selectGroupButton: Button = view.findViewById(R.id.Select_Group_Schedule_Btn)
-
-        // Устанавливаем слушатель нажатий для вашей кнопки
         selectGroupButton.setOnClickListener {
-            // Создаем Intent для открытия ChooseGroupActivity
-            val intent = Intent(requireContext(), ChooseGroupActivity::class.java) // Используем requireContext()
-            // Запускаем активити и ожидаем результат
+            val intent = Intent(requireContext(), ChooseGroupActivity::class.java)
             chooseGroupActivityResultLauncher.launch(intent)
         }
-
-
 
         sharedPreferences =
             requireContext().getSharedPreferences("Users_preferences", Context.MODE_PRIVATE)
 
-        selectedGroup = sharedPreferences.getString("gr", null)!!
+        selectedGroup = setDefaultGroup()
 
         //настраиваем обработчик выбора даты
         val monthText: TextView = view.findViewById(R.id.month)
@@ -164,50 +156,15 @@ class ScheduleFragment : Fragment() {
 
         monthText.text = "${dayOfWeekToString[currDayOfWeek]}, $currDay ${monthToString[currMonth]}"
 
-
-        //настраиваем recycling view
-
         val LessRecyclerView: RecyclerView = view.findViewById(R.id.LessonsSchefuleRecyclingView)
 
-        //Важно!!! без этого не отображалось!!
         LessRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         lessadapter = ScheduleLessonsAdapter(requireContext())
         LessRecyclerView.adapter = lessadapter
 
-
-        var isZero = false
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                list = lessonAPI.getThen(
-                    selectedGroup,
-                    DuplcurrYear,
-                    _sem,
-                    "$currYear-${currMonth + 1}-$currDay",
-                    "$currYear-${currMonth + 1}-$currDay"
-                )
-                isZero = list?.data?.size == 0
-            } catch (e: Exception) {
-            }
-            if (isAdded) {
-                requireActivity().runOnUiThread {
-
-                    val lessonsList = list?.data?.sortedBy { it.pair }
-                        ?: emptyList() // Если нет данных, возвращаем пустой список
-                    lessadapter.submitList(lessonsList)
-                    if (isZero) {
-                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
-                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                            View.GONE
-                    } else {
-                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                            View.VISIBLE
-                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
-                    }
-                }
-            }
-        }
+        loadSched()
 
         tomorrowBtn = view.findViewById(R.id.NextDay_Schedule_Btn)
 
@@ -225,67 +182,15 @@ class ScheduleFragment : Fragment() {
         return view
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val itemSelectedListener: AdapterView.OnItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    selectedGroup = parent.getItemAtPosition(position) as String
-                    var isZero = false
-                    //реализация при смене
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        try {
-                            list = lessonAPI.getThen(
-                                selectedGroup,
-                                DuplcurrYear,
-                                _sem,
-                                "$currYear-${currMonth + 1}-$currDay",
-                                "$currYear-${currMonth + 1}-$currDay"
-                            )
-                            isZero = list?.data?.size == 0
-                        } catch (e: Exception) {
-                        }
-                        if (isAdded) {
-                            requireActivity().runOnUiThread {
-                                if (isAdded) {
-                                    requireActivity().runOnUiThread {
-
-                                        val lessonsList = list?.data?.sortedBy { it.pair }
-                                            ?: emptyList() // Если нет данных, возвращаем пустой список
-                                        lessadapter.submitList(lessonsList)
-                                        if (isZero) {
-                                            view.findViewById<View>(R.id.noScheduleItem).visibility =
-                                                View.VISIBLE
-                                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                                                View.GONE
-                                        } else {
-                                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                                                View.VISIBLE
-                                            view.findViewById<View>(R.id.noScheduleItem).visibility =
-                                                View.GONE
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-            }
-
-
         val ScheduleBtn: ImageButton = view.findViewById(R.id.Schedule_Btn)
-
+        val ScheduleBigBtn: Button = view.findViewById(R.id.Select_Date_Schedule_Btn)
         ScheduleBtn.setOnClickListener {
+            showCal()
+        }
+        ScheduleBigBtn.setOnClickListener {
             showCal()
         }
     }
@@ -333,39 +238,7 @@ class ScheduleFragment : Fragment() {
                 _sem = 2
             }
 
-            var isZero = false
-            //обработка выбранной даты будет здесь
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    list = lessonAPI.getThen(
-                        selectedGroup,
-                        DuplcurrYear,
-                        _sem,
-                        "$currYear-${currMonth + 1}-$currDay",
-                        "$currYear-${currMonth + 1}-$currDay"
-                    )
-                    isZero = list?.data?.size == 0
-                } catch (e: Exception) {
-                    Log.e("eeee", "${e.message}")
-                }
-                if (isAdded) {
-                    requireActivity().runOnUiThread {
-
-                        val lessonsList = list?.data?.sortedBy { it.pair }
-                            ?: emptyList() // Если нет данных, возвращаем пустой список
-                        lessadapter.submitList(lessonsList)
-                        if (isZero) {
-                            view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
-                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                                View.GONE
-                        } else {
-                            view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                                View.VISIBLE
-                            view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
-                        }
-                    }
-                }
-            }
+            loadSched()
         }
 
         val datePicker = DatePickerDialog(
@@ -378,35 +251,11 @@ class ScheduleFragment : Fragment() {
         datePicker.show()
     }
 
-    fun getCurrentStudyWeek(currDay: Int, currMonth: Int, currYear: Int): Int {
-        // Приведение месяца из Calendar (от 0 до 11) к формату LocalDate (от 1 до 12)
-        val currentDate = LocalDate.of(currYear, currMonth + 1, currDay)
-
-        // Определяем 1 сентября текущего года
-        val firstSeptember = LocalDate.of(currYear, 9, 1)
-
-        // Если текущая дата до 1 сентября, используем 1 сентября прошлого года
-        val startDate = if (currentDate.isBefore(firstSeptember)) {
-            LocalDate.of(currYear - 1, 9, 1)
-        } else {
-            firstSeptember
-        }
-
-        // Разница в неделях
-        val weeks = ChronoUnit.WEEKS.between(startDate, currentDate)
-
-        return weeks.toInt()
-    }
 
     fun returnToday() {
         val today = Calendar.getInstance()
         isToday = true
         selectedDate = today
-
-        this.currYear = today.get(Calendar.YEAR)
-        this.currMonth = today.get(Calendar.MONTH)
-        this.currDay = today.get(Calendar.DAY_OF_MONTH)
-        this.currDayOfWeek = today.get(Calendar.DAY_OF_WEEK)
 
         this.currYear = today.get(Calendar.YEAR)
         this.currMonth = today.get(Calendar.MONTH)
@@ -430,6 +279,10 @@ class ScheduleFragment : Fragment() {
             _sem = 2
         }
 
+        loadSched()
+    }
+
+    private fun loadSched() {
         var isZero = false
         //обработка выбранной даты будет здесь
         lifecycleScope.launch(Dispatchers.IO) {
@@ -493,46 +346,35 @@ class ScheduleFragment : Fragment() {
             _sem = 2
         }
 
-        var isZero = false
-        //обработка выбранной даты будет здесь
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                list = lessonAPI.getThen(
-                    selectedGroup,
-                    DuplcurrYear,
-                    _sem,
-                    "$currYear-${currMonth + 1}-$currDay",
-                    "$currYear-${currMonth + 1}-$currDay"
-                )
-                isZero = list?.data?.size == 0
-            } catch (e: Exception) {
-                Log.e("eeee", "${e.message}")
-            }
-            if (isAdded) {
-                requireActivity().runOnUiThread {
+        loadSched()
+    }
 
-                    val lessonsList = list?.data?.sortedBy { it.pair }
-                        ?: emptyList() // Если нет данных, возвращаем пустой список
-                    lessadapter.submitList(lessonsList)
-                    if (isZero) {
-                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.VISIBLE
-                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                            View.GONE
-                    } else {
-                        view.findViewById<View>(R.id.LessonsSchefuleRecyclingView).visibility =
-                            View.VISIBLE
-                        view.findViewById<View>(R.id.noScheduleItem).visibility = View.GONE
-                    }
-                }
-            }
+    private fun setDefaultGroup(): String {
+        return sharedPreferences.getString("gr", null)!!
+    }
+
+    fun getCurrentStudyWeek(currDay: Int, currMonth: Int, currYear: Int): Int {
+        // Приведение месяца из Calendar (от 0 до 11) к формату LocalDate (от 1 до 12)
+        val currentDate = LocalDate.of(currYear, currMonth + 1, currDay)
+
+        // Определяем 1 сентября текущего года
+        val firstSeptember = LocalDate.of(currYear, 9, 1)
+
+        // Если текущая дата до 1 сентября, используем 1 сентября прошлого года
+        val startDate = if (currentDate.isBefore(firstSeptember)) {
+            LocalDate.of(currYear - 1, 9, 1)
+        } else {
+            firstSeptember
         }
+
+        // Разница в неделях
+        val weeks = ChronoUnit.WEEKS.between(startDate, currentDate)
+
+        return weeks.toInt()
     }
 
     fun checkIfToday(year: Int, month: Int, dayOfMonth: Int) {
-        // Получаем текущую дату
         val today = Calendar.getInstance()
-
-        // Сравниваем переданную дату с текущей
         isToday = (year == today.get(Calendar.YEAR) &&
                 month == today.get(Calendar.MONTH) &&
                 dayOfMonth == today.get(Calendar.DAY_OF_MONTH))

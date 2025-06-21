@@ -7,259 +7,270 @@
     android:background="@color/NewColor_DarkWhite"
     tools:context=".presentation.fragments.HomeFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        app:layout_constraintBottom_toTopOf="@+id/Exam_Schedule_Btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" android:layout_height="0dp">
 
-
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="16dp">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/NewColor_DarkWhite"
-                android:orientation="vertical"
-                android:paddingTop="24dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="100dp"
+                    android:background="@color/NewColor_DarkWhite"
+                    android:orientation="vertical"
+                    android:paddingTop="24dp">
 
-                    <TextView
-                        android:id="@+id/TextViewSchedule"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="36dp"
-                        android:fontFamily="@font/sf_pro_display_bold"
-                        android:text="21-КБ-ПР1"
-                        android:textColor="@color/black"
-                        android:textSize="22dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <ImageButton
-                        android:id="@+id/Schedule_Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="14dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/schedule_btn"
-                        app:layout_constraintBottom_toBottomOf="@+id/TextViewSchedule"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        <TextView
+                            android:id="@+id/TextViewSchedule"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="36dp"
+                            android:fontFamily="@font/sf_pro_display_bold"
+                            android:text="21-КБ-ПР1"
+                            android:textColor="@color/black"
+                            android:textSize="22dp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/Schedule_Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/schedule_btn"
+                            app:layout_constraintBottom_toBottomOf="@+id/TextViewSchedule"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.cardview.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp">
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/month"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="14dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:fontFamily="@font/cygre_bold"
-                                android:text="1, Январь"
-                                android:textColor="@color/NewColor_DarkBlue"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/isOddWeekText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="14dp"
-                                android:fontFamily="@font/cygre_bold"
-                                android:letterSpacing="0.0000000000000001"
-                                android:text="четная неделя"
-                                android:textColor="@color/NewColor_DarkGray"
-                                android:textSize="14dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                        <!--TextView
-                                android:id="@+id/ScheduleNoPairText"
-                                android:alpha="0"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                android:layout_marginTop="50dp"
-                                android:fontFamily="@font/cygre_regular"
-                                android:text="На сегодня пар нет, отдыхайте)"/-->
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="16dp"
-                            android:background="@color/white"
-                            android:orientation="horizontal"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:orientation="vertical">
+
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/noScheduleItem"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="110dp"
-                                    android:layout_marginVertical="5dp"
-                                    android:visibility="gone"
-                                    app:cardCornerRadius="0dp"
-                                    app:cardElevation="0dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:background="@color/NewColor_DarkWhite"
-                                        android:orientation="horizontal">
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent">
-
-                                            <TextView
-                                                android:id="@+id/textView8"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginEnd="72dp"
-                                                android:fontFamily="@font/montserrat_regular"
-                                                android:text="Занятий не найдено"
-                                                android:textSize="16dp"
-                                                android:textStyle="bold"
-                                                app:layout_constraintBottom_toBottomOf="parent"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toTopOf="parent" />
-
-                                            <ImageView
-                                                android:layout_width="40dp"
-                                                android:layout_height="40dp"
-                                                android:layout_marginEnd="16dp"
-                                                android:src="@drawable/party_face"
-                                                app:layout_constraintBottom_toBottomOf="@+id/textView8"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintTop_toTopOf="@+id/textView8" />
-
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    </LinearLayout>
-
-                                </androidx.cardview.widget.CardView>
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/LessonsSchefuleRecyclingView"
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:id="@+id/month"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:clipToPadding="false"
-                                    android:visibility="visible"
+                                    android:layout_marginStart="14dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:fontFamily="@font/cygre_bold"
+                                    android:text="1, Январь"
+                                    android:textColor="@color/NewColor_DarkBlue"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/isOddWeekText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="14dp"
+                                    android:fontFamily="@font/cygre_bold"
+                                    android:letterSpacing="0.0000000000000001"
+                                    android:text="четная неделя"
+                                    android:textColor="@color/NewColor_DarkGray"
+                                    android:textSize="14dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                            <!--TextView
+                                    android:id="@+id/ScheduleNoPairText"
+                                    android:alpha="0"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:layout_marginTop="50dp"
+                                    android:fontFamily="@font/cygre_regular"
+                                    android:text="На сегодня пар нет, отдыхайте)"/-->
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="16dp"
+                                android:background="@color/white"
+                                android:orientation="horizontal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+
+                                    <androidx.cardview.widget.CardView
+                                        android:id="@+id/noScheduleItem"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="110dp"
+                                        android:layout_marginVertical="5dp"
+                                        android:visibility="gone"
+                                        app:cardCornerRadius="0dp"
+                                        app:cardElevation="0dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="@color/NewColor_DarkWhite"
+                                            android:orientation="horizontal">
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent">
+
+                                                <TextView
+                                                    android:id="@+id/textView8"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="16dp"
+                                                    android:layout_marginEnd="72dp"
+                                                    android:fontFamily="@font/montserrat_regular"
+                                                    android:text="Занятий не найдено"
+                                                    android:textSize="16dp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintBottom_toBottomOf="parent"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                                <ImageView
+                                                    android:layout_width="40dp"
+                                                    android:layout_height="40dp"
+                                                    android:layout_marginEnd="16dp"
+                                                    android:src="@drawable/party_face"
+                                                    app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </LinearLayout>
+
+                                    </androidx.cardview.widget.CardView>
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/LessonsSchefuleRecyclingView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clipToPadding="false"
+                                        android:visibility="visible"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </LinearLayout>
+
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
-                </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/NextDay_Schedule_Btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/NewColor_Blue"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:letterSpacing="0.01"
+                    android:text="Перейти к расписанию на завтра"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/Select_Date_Schedule_Btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:backgroundTint="@color/NewColor_Blue"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:letterSpacing="0.01"
+                    android:text="Выбрать день"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/Select_Group_Schedule_Btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:backgroundTint="@color/NewColor_Blue"
+                    android:fontFamily="@font/sf_pro_display_bold"
+                    android:letterSpacing="0.01"
+                    android:text="Выбрать группу"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
 
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/NextDay_Schedule_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="14dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/NewColor_Blue"
-                android:fontFamily="@font/sf_pro_display_bold"
-                android:letterSpacing="0.01"
-                android:text="Перейти к расписанию на завтра"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
 
-            <Button
-                android:id="@+id/Select_Date_Schedule_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="14dp"
-                android:backgroundTint="@color/NewColor_Blue"
-                android:fontFamily="@font/sf_pro_display_bold"
-                android:letterSpacing="0.01"
-                android:text="Выбрать день"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/Select_Group_Schedule_Btn"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="14dp"
-                android:backgroundTint="@color/NewColor_Blue"
-                android:fontFamily="@font/sf_pro_display_bold"
-                android:letterSpacing="0.01"
-                android:text="Выбрать группу"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-
-
-        </LinearLayout>
-
-
-    </ScrollView>
 
     <Button
         android:id="@+id/Exam_Schedule_Btn"
@@ -275,4 +286,5 @@
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="14dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
